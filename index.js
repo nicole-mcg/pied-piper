@@ -59,15 +59,24 @@ function updateFile(socketId, payload) {
     const newPayload = {};
     const fileContents = JSON.stringify(payload);
 
-    fs.writeFile(__dirname + "/file.json", fileContents, (err) => {
+    fs.mkdir(__dirname + "/data", (err) => {
         if(err) {
             console.log("Error updating file", err)
             emitError(socket, "Error saving updates");
             return;
         }
+        fs.writeFile(__dirname + "/data/file.json", fileContents, (err) => {
+            if(err) {
+                console.log("Error updating file", err)
+                emitError(socket, "Error saving updates");
+                return;
+            }
+        
+            io.emit('update', fileContents);
+        }); 
+    })
+
     
-        io.emit('update', fileContents);
-    }); 
 
 }
 
