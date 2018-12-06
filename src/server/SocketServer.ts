@@ -5,7 +5,7 @@ import Socket from './Socket'
 
 export default class SocketServer {
     public io:any;
-    public readonly connections:{ 
+    public readonly connections:{ //Currently not used
         [id:string]: Socket 
     };
 
@@ -22,6 +22,26 @@ export default class SocketServer {
         return socket;
     }
 
-    
+    onUpdate(payload:string, socket:Socket) {
+        if (!this.validatePayload(payload)) {
+            socket.emitError("update", "Invalid request data");
+            return false;
+        }
+        this.emitUpdate(payload);
+        return true;
+    }
+
+    emitUpdate(payload) {
+        this.io.emit('update', payload);
+    }
+
+    private validatePayload(payload):boolean {
+        try {
+            JSON.parse(payload);
+            return true;
+        } catch(e) {
+            return false;
+        }
+    }
 
 }
