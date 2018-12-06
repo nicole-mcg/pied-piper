@@ -27,12 +27,17 @@ export default class SocketServer {
             socket.emitError("update", "Invalid request data");
             return false;
         }
+
         this.emitUpdate(payload);
         return true;
     }
 
     emitUpdate(payload) {
         this.io.emit('update', payload);
+    }
+
+    onDisconnect(socket:Socket) {
+
     }
 
     private validatePayload(payload):boolean {
