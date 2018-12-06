@@ -1,5 +1,9 @@
 const fs = require('fs');
-import FileHelper from '../FileHelper'
+import {
+    makeDirIfNotExists,
+    writeToFile,
+    makeDirAndWriteToFile,
+} from '../FileHelper'
 
 class MockFs {
     private error:object;
@@ -27,44 +31,57 @@ jest.mock('fs', mockFs);
 
 describe('FileHelper', () => {
 
+    const path = 'test';
+    const contents = "";
+
     afterEach(() => {
-        jest.resetAllMocks();
+        jest.restoreAllMocks();
     })
 
     describe('makeDirIfNotExists', () => {
         it('will resolve if a directory is created', () => {
-            const path = 'test';
-            expect(FileHelper.makeDirIfNotExists(path)).resolves;
+            expect(makeDirIfNotExists(path)).resolves;
         });
 
         it('will resolve if the directory already exists', () => {
-            const path = 'test';
             mockFs.shouldFail({
                 code: "EEXIST"
             });
-            expect(FileHelper.makeDirIfNotExists(path)).resolves;
+            expect(makeDirIfNotExists(path)).resolves;
         });
     
         it('will reject if a directory is not created', () => {
-            const path = 'test';
             mockFs.shouldFail();
-            expect(FileHelper.makeDirIfNotExists(path)).rejects;
+            expect(makeDirIfNotExists(path)).rejects;
         });
     });
 
     describe('writeToFile', () => {
 
         it('will resolve if the file is written to', () => {
-            const path = 'test';
-            const contents = ""
-            expect(FileHelper.writeToFile(path, contents)).resolves;
+            expect(writeToFile(path, contents)).resolves;
         });
         
         it('will reject if the file is not written to', () => {
-            const path = 'test';
-            const contents = ""
             mockFs.shouldFail();
-            expect(FileHelper.writeToFile(path, contents)).rejects;
+            expect(writeToFile(path, contents)).rejects;
+        });
+
+    })
+
+    describe('makeDirAndWriteToFile', () => {
+
+        const dirPath = '';
+        const filePath = '';
+        
+
+        it('will resolve if the file is written to', () => {
+            expect(makeDirAndWriteToFile(dirPath, filePath, contents)).resolves;
+        });
+        
+        it('will reject if the file is not written to', () => {
+            mockFs.shouldFail();
+            expect(makeDirAndWriteToFile(dirPath, filePath, contents)).rejects;
         });
 
     })
