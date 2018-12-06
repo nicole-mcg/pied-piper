@@ -21,11 +21,19 @@ export default class Socket {
     }
 
     onUpdate(payload:string) {
-        //this.server.onUpdate(payload, this);
+        this.server.onUpdate(payload, this);
     }
 
-    onDisconnect(payload:string) {
+    onDisconnect() {
+        //this.server.onDisconnect(this);
+    }
 
+    emitError(endpoint:string, message:string) {
+        const payload = {
+            endpoint,
+            message
+        }
+        this.ioSocket.emit('onerror', JSON.stringify(payload));
     }
 
 }

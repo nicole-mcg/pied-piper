@@ -7,7 +7,8 @@ describe('Socket', () => {
 
     let socket:any = null;
     const mockIoSocket = {
-        on: jest.fn()
+        on: jest.fn(),
+        emit: jest.fn(),
     };
 
     beforeEach(() => {
@@ -28,14 +29,35 @@ describe('Socket', () => {
         expect(socket.id).toBeTruthy();
     });
 
-    xit('will notify the server on update', () => {
+    it('will notify the server on update', () => {
         const payload = "{}";
+        socket.server.onUpdate = jest.fn();
+
         socket.onUpdate(payload);
 
         expect(socket.server.onUpdate).toHaveBeenCalledWith(payload, socket);
     });
 
     xit('will notify the server on disconnect', () => {
+        const payload = "{}";
+        socket.server.onDisconnect = jest.fn();
+
+        socket.onDisconnect(payload);
+
+        expect(socket.server.onDisconnect).toHaveBeenCalledWith(payload, socket);
+    });
+
+    it('can emit an error', () => {
+        const endpoint:string = "update";
+        const message:string = "Could not update";
+        const expectedPayload = {
+            endpoint,
+            message,
+        }
+
+        socket.emitError(endpoint, message);
+
+        expect(mockIoSocket.emit).toHaveBeenCalledWith('onerror', JSON.stringify(expectedPayload));
     });
 
 });
