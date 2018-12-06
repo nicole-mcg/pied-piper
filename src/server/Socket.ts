@@ -1,6 +1,6 @@
 const uuidv4 = require('uuid/v4');
 
-import * as autoBind from 'auto-bind';
+import autoBind from 'auto-bind';
 import SocketServer from './SocketServer';
 
 export default class Socket {

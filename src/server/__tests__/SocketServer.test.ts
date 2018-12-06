@@ -1,12 +1,20 @@
-import * as http from 'http'
+const fs = require('fs');
+const path = require('path');
+
+import http from 'http'
 
 import MockSocket from '../Socket'
 import SocketServer from '../SocketServer'
+import { makeDirAndWriteToFile } from './../../helpers/FileHelper';
 
+jest.mock('express');
 jest.mock('http');
 jest.mock('../Socket');
 
-const ioStub = {
+jest.mock('../../helpers/FileHelper');
+
+
+var ioStub = { // var so variable is hoisted
     on: jest.fn(),
     emit: jest.fn()
 }
@@ -24,7 +32,7 @@ describe('SocketServer', () => {
     });
 
     afterEach(() => {
-        jest.resetAllMocks();
+        jest.restoreAllMocks();
     })
 
     it('can be created', () => {
@@ -34,11 +42,17 @@ describe('SocketServer', () => {
     });
 
     it('can accept a socket', () => {
+        const oldLog = console.log;
+        console.log = jest.fn();
+
         const ioSocketStub = {};
         const expectedSocket:MockSocket = createMockSocket(ioSocketStub);
 
         const socket = socketServer.onConnectionRecieved(ioSocketStub);
         expect(socket).toEqual(expectedSocket);
+
+        expect(console.log).toHaveBeenCalled();
+        console.log = oldLog;
     });
 
     it('can validate a payload', () => {
@@ -55,26 +69,34 @@ describe('SocketServer', () => {
         expect(ioStub.emit).toHaveBeenCalledWith('update', payload);
     });
 
-    it('can recieve an update from a socket', () => {
+    it('can recieve an update from a socket', (done) => {
         const payload = "{}";
         const mockSocket = createMockSocket();
         socketServer.emitUpdate = jest.fn();
 
-        const success = socketServer.onUpdate(payload, mockSocket);
+        
+        const parentDir = path.normalize(__dirname+"/..");
+        const dirPath = parentDir + "/../../data";
+        const filePath = parentDir + "/../../data/file.json";
 
-        expect(success).toBe(true);
-        expect(socketServer.emitUpdate).toHaveBeenCalledWith(payload);
+        const promise = socketServer.onUpdate(payload, mockSocket)
+            .then(() => {
+                expect(makeDirAndWriteToFile).toHaveBeenCalledWith(dirPath, filePath, payload);
+                expect(socketServer.emitUpdate).toHaveBeenCalledWith(payload);
+                done();
+            })
     });
 
-    it('will emit error to socket on update failure', () => {
+    it('will emit error to socket on update failure', (done) => {
         const invalidPayload = "invalid json";
         const mockSocket = createMockSocket();
         mockSocket.emitError = jest.fn();
 
-        const success = socketServer.onUpdate(invalidPayload, mockSocket);
-
-        expect(success).toBe(false);
-        expect(mockSocket.emitError).toHaveBeenCalledWith("update", "Invalid request data");
+        const promise = socketServer.onUpdate(invalidPayload, mockSocket)
+            .catch(() => {
+                expect(mockSocket.emitError).toHaveBeenCalledWith("update", "Invalid request data");
+                done();
+            })
     });
 
     function createMockSocket(stub={}):any {

@@ -1,8 +1,9 @@
-import * as http from 'http';
-import * as IO from 'socket.io';
+import http from 'http';
+import IO from 'socket.io';
 
-import * as autoBind from 'auto-bind';
+import autoBind from 'auto-bind';
 
+import { makeDirAndWriteToFile } from '../helpers/FileHelper'
 import Socket from './Socket'
 
 export default class SocketServer {
@@ -17,17 +18,22 @@ export default class SocketServer {
 
     onConnectionRecieved(ioSocket:any) : Socket {
         const socket:Socket = new Socket(ioSocket, this);
+        console.log("Connection recieved: " + socket.id);
         return socket;
     }
 
-    onUpdate(payload:string, socket:Socket) {
+    onUpdate(payload:string, socket:Socket):Promise<any> {//TODO move to routed endpoint and cll that
         if (!this.validatePayload(payload)) {
             socket.emitError("update", "Invalid request data");
-            return false;
+            return Promise.reject();
         }
 
-        this.emitUpdate(payload);
-        return true;
+        const dirPath = __dirname + "/../../data";
+        const filePath = __dirname + "/../../data/file.json";
+
+        return makeDirAndWriteToFile(dirPath, filePath, payload)
+            .then(() => this.emitUpdate(payload))
+            .catch(() => this.onSaveError(socket));
     }
 
     emitUpdate(payload) {
@@ -36,6 +42,10 @@ export default class SocketServer {
 
     onDisconnect(socket:Socket) {
 
+    }
+
+    private onSaveError(socket) {
+        socket.emitError('update', "Error saving data");
     }
 
     private validatePayload(payload):boolean {
