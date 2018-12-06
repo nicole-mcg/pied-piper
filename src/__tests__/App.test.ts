@@ -24,6 +24,7 @@ describe('App', () => {
 
         const wrappedRouteHandler = app.express.get.mock.calls[0][1];
         expect(wrappedRouteHandler).toCallFunction(routeHandler);
+        expect(app.routes).toHaveProperty(path, wrappedRouteHandler);
     });
 
     it('can add multiple routes at once', () => {
