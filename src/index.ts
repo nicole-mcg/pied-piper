@@ -1,16 +1,15 @@
+const uuidv4 = require('uuid/v4');
+
 import * as fs from 'fs'
 
-import * as express from 'express';
 import * as http from 'http';
 import * as IO from 'socket.io';
 
-const uuidv4 = require('uuid/v4');
+import app from "./App"
 
-const app:any = express();
 const server:any = new http.Server(app);
 const io:any = IO(server);
 
-app.get('/', onWebRequest);
 
 io.on('connection', onConnectionRecieved);
 server.listen(3000);
