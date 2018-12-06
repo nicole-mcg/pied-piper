@@ -16,11 +16,13 @@ jest.mock("../server/SocketServer");
 describe('App', () => {
 
     it('can be created', () => {
-        const app = new App();
+        const port = 99;
+        const app:any = new App(port);
 
         expect(app).toBeTruthy()
+        expect(app.port).toBe(port);
         expect(app.httpServer).toBeTruthy();
-        expect(app.io).toBeTruthy();
+        expect(app).toBeTruthy()
     });
 
     it('can define a route', () => {
