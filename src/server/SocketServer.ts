@@ -1,12 +1,15 @@
 import * as http from 'http';
 import * as IO from 'socket.io';
 
+import * as autoBind from 'auto-bind';
+
 import Socket from './Socket'
 
 export default class SocketServer {
     public io:any;
 
     constructor(httpServer:http.Server) {
+        autoBind(this);
         this.io = IO(httpServer);
 
         this.io.on('connection', this.onConnectionRecieved);
