@@ -1,34 +1,46 @@
 const fs = require('fs');
 const uuidv4 = require('uuid/v4');
 
-var app = require('express')();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
+var App = require('express');
+var Http = require('http');
+var IO = require('socket.io');
+
+// import fs from 'fs';
+// import uuidv4 from 'uuid/v4';
+
+// import App from 'express';
+// import Http from 'http';
+// import IO from 'socket.io';
+
+const app:any = App();
+const http:any = Http.Server(app);
+const io:any = IO(http);
 
 app.get('/', onWebRequest);
 
 io.on('connection', onConnectionRecieved);
 http.listen(3000);
 
-function onWebRequest(req, res) {
+function onWebRequest(req:any, res:any) {
     res.sendFile(__dirname + "/public/index.html");
    //res.sendFile(__dirname + "/file.json");
 }
 
-const sockets = {};
+const sockets:object = {};
 
-function onConnectionRecieved(socket) {
+function onConnectionRecieved(socket:any) {
     console.log("Connection recieved");
-    const socketId = uuidv4();
+
+    const socketId:string = uuidv4();
     socket.on('disconnect', () => onDisconnect(socketId));
     socket.on('update', (payload) => updateFile(socketId, payload));
 
     sockets[socketId] = socket;
 }
 
-function onDisconnect(socketId) {
+function onDisconnect(socketId:string) {
     if (!sockets[socketId]) {
-        console.warn("Unknown socket disconnected", socket);
+        console.warn("Unknown socket disconnected", socketId);
         return;
     }
 
@@ -40,32 +52,30 @@ function onStart() {
 }
 
 const ALLOW_TEXT_MESSAGES = false;
-function updateFile(socketId, payload) {
-    const socket = sockets[socketId];
+function updateFile(socketId:string, payload:string) {
+    const socket:any = sockets[socketId];
 
-    if (typeof payload == 'string') {
-        if (ALLOW_TEXT_MESSAGES) {
-            io.emit('update', payload);
-            return;
-        }
-        try {
-            payload = JSON.parse(payload);
-        } catch (e) {
-            emitError(socket, "Invalid request payload");
-            return;
-        }
+    if (ALLOW_TEXT_MESSAGES) {
+        io.emit('update', payload);
+        return;
+    }
+    try {
+        payload = JSON.parse(payload);
+    } catch (e) {
+        emitError(socket, "Invalid request payload");
+        return;
     }
 
     const newPayload = {};
     const fileContents = JSON.stringify(payload);
 
-    fs.mkdir(__dirname + "/data", (err) => {
+    fs.mkdir(__dirname + "/data", (err:any) => {
         if(err) {
             console.log("Error updating file", err)
             emitError(socket, "Error saving updates");
             return;
         }
-        fs.writeFile(__dirname + "/data/file.json", fileContents, (err) => {
+        fs.writeFile(__dirname + "/data/file.json", fileContents, (err:any) => {
             if(err) {
                 console.log("Error updating file", err)
                 emitError(socket, "Error saving updates");
@@ -80,7 +90,7 @@ function updateFile(socketId, payload) {
 
 }
 
-function emitError(socket, message) {
+function emitError(socket:any, message:string) {
     const payload = {
         error: message
     };
