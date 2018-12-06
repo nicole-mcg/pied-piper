@@ -69,7 +69,7 @@ describe('SocketServer', () => {
         expect(socketServer.emitUpdate).toHaveBeenCalledWith(payload);
     });
 
-    it('will emit error to socket on request failure', () => {
+    it('will emit error to socket on update failure', () => {
         const invalidPayload = "invalid json";
         const mockSocket = createMockSocket();
         mockSocket.emitError = jest.fn();
@@ -77,7 +77,7 @@ describe('SocketServer', () => {
         const success = socketServer.onUpdate(invalidPayload, mockSocket);
 
         expect(success).toBe(false);
-        expect(mockSocket.emitError).toHaveBeenCalled();
+        expect(mockSocket.emitError).toHaveBeenCalledWith("update", "Invalid request data");
     });
 
     function createMockSocket(stub={}):any {
