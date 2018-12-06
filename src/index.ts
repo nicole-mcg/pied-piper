@@ -1,19 +1,19 @@
-const fs = require('fs');
-const uuidv4 = require('uuid/v4');
+// const fs = require('fs');
+// const uuidv4 = require('uuid/v4');
 
-var App = require('express');
-var Http = require('http');
-var IO = require('socket.io');
+// var App = require('express');
+// var Http = require('http');
+// var IO = require('socket.io');
 
-// import fs from 'fs';
-// import uuidv4 from 'uuid/v4';
+import * as fs from 'fs'
+import * as uuidv4 from 'uuid/v4';
 
-// import App from 'express';
-// import Http from 'http';
-// import IO from 'socket.io';
+import * as App from 'express';
+import * as Http from 'http';
+import * as IO from 'socket.io';
 
 const app:any = App();
-const http:any = Http.Server(app);
+const http:any = new Http.Server(app);
 const io:any = IO(http);
 
 app.get('/', onWebRequest);
