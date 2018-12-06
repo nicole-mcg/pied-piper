@@ -7,6 +7,8 @@ import App from "./App"
 
 const app:App = new App();
 
+app.createRoute('/', onWebRequest);
+
 const server:any = app.httpServer;
 const io:any = app.io;
 
