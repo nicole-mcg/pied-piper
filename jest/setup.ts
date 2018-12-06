@@ -1,10 +1,3 @@
-
-declare namespace jest {
-    interface Matchers<R>  {
-        toCallFunction(expected): R;
-    }
-}
-
 expect.extend({
     toCallFunction(actual, expected) {
         const numCalls = expected.mock.calls.length;
