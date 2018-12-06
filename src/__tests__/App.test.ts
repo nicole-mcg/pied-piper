@@ -5,7 +5,6 @@ import Route from './../routes/Route';
 jest.mock('express', () => {
     return require('jest-express');
 });
-
 jest.mock('http');
 jest.mock('socket.io', () => (
     (httpServer) => ({})

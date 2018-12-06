@@ -1,6 +1,5 @@
-import * as createExpress from 'express';
-import * as http from 'http';
-import * as IO from 'socket.io';
+import createExpress from 'express';
+import http from 'http';
 
 import './types'
 
