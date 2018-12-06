@@ -1,5 +1,5 @@
-import * as express from 'express';
-import * as http from 'http';
+import express from 'express';
+import http from 'http';
 
 import App_ from '../App'
 import SocketServer_ from '../server/SocketServer'
