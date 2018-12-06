@@ -25,7 +25,7 @@ export default class Socket {
     }
 
     onDisconnect() {
-        //this.server.onDisconnect(this);
+        this.server.onDisconnect(this);
     }
 
     emitError(endpoint:string, message:string) {

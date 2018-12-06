@@ -38,13 +38,12 @@ describe('Socket', () => {
         expect(socket.server.onUpdate).toHaveBeenCalledWith(payload, socket);
     });
 
-    xit('will notify the server on disconnect', () => {
-        const payload = "{}";
+    it('will notify the server on disconnect', () => {
         socket.server.onDisconnect = jest.fn();
 
-        socket.onDisconnect(payload);
+        socket.onDisconnect();
 
-        expect(socket.server.onDisconnect).toHaveBeenCalledWith(payload, socket);
+        expect(socket.server.onDisconnect).toHaveBeenCalledWith(socket);
     });
 
     it('can emit an error', () => {
