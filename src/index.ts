@@ -14,6 +14,3 @@ function onWebRequest(req:any, res:any) {
     res.sendFile("/public/index.html", { root: __dirname + "/../"});
    //res.sendFile(__dirname + "/file.json");
 }
-
-//     fs.mkdir(__dirname + "/../data"
-//     fs.writeFile(__dirname + "/../data/file.json"
