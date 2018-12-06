@@ -1,17 +1,24 @@
 import Socket from '../Socket'
-import SocketServer from '../SocketServer';
+import MockSocketServer from '../SocketServer';
 
 jest.mock('../SocketServer');
 
 describe('Socket', () => {
 
-    it('can be created', () => {
-        const mockServer:SocketServer = new SocketServer(null);
-        const mockIoSocket = {
-            on: jest.fn()
-        };
-        const socket:any = new Socket(mockIoSocket, mockServer);
+    let socket:any = null;
+    const mockIoSocket = {
+        on: jest.fn()
+    };
 
+    beforeEach(() => {
+        socket = new Socket(mockIoSocket, new MockSocketServer(null));
+    })
+
+    afterEach(() => {
+        jest.resetAllMocks();
+    })
+
+    it('can be created', () => {
         expect(mockIoSocket.on).toHaveBeenCalledTimes(2);        
         expect(mockIoSocket.on).toHaveBeenCalledWith('update', socket.onUpdate)
         expect(mockIoSocket.on).toHaveBeenCalledWith('disconnect', socket.onDisconnect)
@@ -21,7 +28,14 @@ describe('Socket', () => {
         expect(socket.id).toBeTruthy();
     });
 
-    xit('can ...', () => {
+    xit('will notify the server on update', () => {
+        const payload = "{}";
+        socket.onUpdate(payload);
+
+        expect(socket.server.onUpdate).toHaveBeenCalledWith(payload, socket);
+    });
+
+    xit('will notify the server on disconnect', () => {
     });
 
 });

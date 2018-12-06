@@ -20,11 +20,11 @@ export default class Socket {
         ioSocket.on('update', this.onUpdate);
     }
 
-    onUpdate() {
-
+    onUpdate(payload:string) {
+        //this.server.onUpdate(payload, this);
     }
 
-    onDisconnect() {
+    onDisconnect(payload:string) {
 
     }
 
