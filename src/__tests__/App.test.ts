@@ -2,6 +2,15 @@
 import App from '../App'
 import Route from './../routes/Route';
 
+jest.mock('express', () => {
+    return require('jest-express');
+});
+
+jest.mock('http');
+jest.mock('socket.io', () => (
+    (httpServer) => ({})
+));
+
 describe('App', () => {
 
     it('can be created', () => {
@@ -14,15 +23,14 @@ describe('App', () => {
 
     it('can define a route', () => {
         const app = new App();
-        app.express = {
-            get: jest.fn()
-        };
+        const mockGet = jest.fn();
+        app.express.get = mockGet;
 
         const path = 'test'
         const routeHandler = jest.fn();
         app.createRoute(path, routeHandler);
 
-        const wrappedRouteHandler = app.express.get.mock.calls[0][1];
+        const wrappedRouteHandler = mockGet.mock.calls[0][1];
         expect(wrappedRouteHandler).toCallFunction(routeHandler);
         expect(app.routes).toHaveProperty(path, wrappedRouteHandler);
     });
