@@ -8,7 +8,7 @@ describe('App', () => {
         const app = new App();
 
         expect(app).toBeTruthy()
-        expect(app.server).toBeTruthy();
+        expect(app.httpServer).toBeTruthy();
         expect(app.io).toBeTruthy();
     });
 

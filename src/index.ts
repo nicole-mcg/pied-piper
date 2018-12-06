@@ -4,9 +4,10 @@ import * as fs from 'fs'
 
 import App from "./App"
 
+
 const app:App = new App();
 
-const server:any = app.server;
+const server:any = app.httpServer;
 const io:any = app.io;
 
 io.on('connection', onConnectionRecieved);

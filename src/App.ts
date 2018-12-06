@@ -6,15 +6,15 @@ import * as IO from 'socket.io';
 
 export default class App {
     public express:any;
-    public server:any;
+    public httpServer:any;
     public io:any;
 
     public readonly routes:{ [s: string]: Function; };
 
     constructor() {
         this.express = express();
-        this.server = new http.Server(this.express);
-        this.io = IO(this.server);
+        this.httpServer = new http.Server(this.express);
+        this.io = IO(this.httpServer);
 
         this.routes = {};
     }
