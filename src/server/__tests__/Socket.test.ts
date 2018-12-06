@@ -16,7 +16,7 @@ describe('Socket', () => {
     })
 
     afterEach(() => {
-        jest.resetAllMocks();
+        jest.restoreAllMocks();
     })
 
     it('can be created', () => {
