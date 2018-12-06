@@ -11,6 +11,8 @@ jest.mock('socket.io', () => (
     (httpServer) => ({})
 ));
 
+jest.mock("../server/SocketServer");
+
 describe('App', () => {
 
     it('can be created', () => {
@@ -46,6 +48,16 @@ describe('App', () => {
         
         expect(createRoute.mock.calls[0]).toEqual([firstRoute.path, firstRoute.handler]);
         expect(createRoute.mock.calls[1]).toEqual([secondRoute.path, secondRoute.handler]);
+    });
+
+    it('can be started', () => {
+        const port = 1;
+        const app = new App(port);
+        app.httpServer.listen = jest.fn();
+
+        app.start();
+
+        expect(app.httpServer.listen).toHaveBeenCalledWith(port);
     });
 
 });
