@@ -13,4 +13,8 @@ export default class App {
         this.server = new http.Server(this.express);
         this.io = IO(this.server);
     }
+
+    public createRoute(path, handlerFunc) {
+        this.express.get(path, handlerFunc);
+    }
 }
