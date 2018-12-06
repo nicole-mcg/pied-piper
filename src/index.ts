@@ -2,12 +2,12 @@ const uuidv4 = require('uuid/v4');
 
 import * as fs from 'fs'
 
-import * as IO from 'socket.io';
+import App from "./App"
 
-import app from "./App"
+const app:App = new App();
 
 const server:any = app.server;
-const io:any = IO(server);
+const io:any = app.io;
 
 io.on('connection', onConnectionRecieved);
 server.listen(3000);
