@@ -22,7 +22,8 @@ describe('App', () => {
         const routeHandler = jest.fn();
         app.createRoute(path, routeHandler);
 
-        expect(app.express.get).toHaveBeenCalledWith(path, routeHandler);
+        const wrappedRouteHandler = app.express.get.mock.calls[0][1];
+        expect(wrappedRouteHandler).toCallFunction(routeHandler);
     });
 
     it('can add multiple routes at once', () => {
@@ -30,12 +31,22 @@ describe('App', () => {
         const createRoute = jest.fn();
         app.createRoute = createRoute;
 
-        const firstRoute = new Route('first', jest.fn());
-        const secondRoute = new Route('second', jest.fn());
+        const firstRouteHandler = jest.fn();
+        const secondRouteHandler = jest.fn();
+
+        const firstRoute = new Route('first', firstRouteHandler);
+        const secondRoute = new Route('second', secondRouteHandler);
         app.createRoutes([firstRoute, secondRoute]);
 
-        expect(createRoute.mock.calls[0]).toEqual([firstRoute.path, firstRoute.handler]);
-        expect(createRoute.mock.calls[1]).toEqual([secondRoute.path, secondRoute.handler]);
+        const firstCallPath = createRoute.mock.calls[0][0];
+        const firstCallHandler = createRoute.mock.calls[0][1];
+        expect(firstCallPath).toEqual(firstRoute.path);
+        expect(firstCallHandler).toCallFunction(firstRouteHandler);
+
+        const secondCallPath = createRoute.mock.calls[1][0];
+        const secondCallHandler = createRoute.mock.calls[1][1];
+        expect(secondCallPath).toEqual(secondRoute.path);
+        expect(secondCallHandler).toCallFunction(secondRouteHandler);
     });
 
 });
