@@ -3,8 +3,9 @@ import app from '../App'
 
 describe('App', () => {
 
-    it('can be created', () => {
-        expect(app).toBeTruthy();
-    })
+    it('is created with a server', () => {
+        expect(app).toBeTruthy()
+        expect(app.server).toBeTruthy();
+    });
 
-})
+});
