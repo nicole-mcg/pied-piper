@@ -39,9 +39,6 @@ describe('SocketServer', () => {
 
         const socket = socketServer.onConnectionRecieved(ioSocketStub);
         expect(socket).toEqual(expectedSocket);
-        expect(socketServer.connections).toEqual({
-            [socket.id]: socket
-        });
     });
 
     it('can validate a payload', () => {
