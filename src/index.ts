@@ -1,28 +1,22 @@
-// const fs = require('fs');
-// const uuidv4 = require('uuid/v4');
-
-// var App = require('express');
-// var Http = require('http');
-// var IO = require('socket.io');
-
 import * as fs from 'fs'
-import * as uuidv4 from 'uuid/v4';
 
-import * as App from 'express';
-import * as Http from 'http';
+import * as express from 'express';
+import * as http from 'http';
 import * as IO from 'socket.io';
 
-const app:any = App();
-const http:any = new Http.Server(app);
-const io:any = IO(http);
+const uuidv4 = require('uuid/v4');
+
+const app:any = express();
+const server:any = new http.Server(app);
+const io:any = IO(server);
 
 app.get('/', onWebRequest);
 
 io.on('connection', onConnectionRecieved);
-http.listen(3000);
+server.listen(3000);
 
 function onWebRequest(req:any, res:any) {
-    res.sendFile(__dirname + "/public/index.html");
+    res.sendFile("/public/index.html", { root: __dirname + "/../"});
    //res.sendFile(__dirname + "/file.json");
 }
 
@@ -69,13 +63,13 @@ function updateFile(socketId:string, payload:string) {
     const newPayload = {};
     const fileContents = JSON.stringify(payload);
 
-    fs.mkdir(__dirname + "/data", (err:any) => {
-        if(err) {
+    fs.mkdir(__dirname + "/../data", (err:any) => {
+        if(err && err.code != "EEXIST") {
             console.log("Error updating file", err)
             emitError(socket, "Error saving updates");
             return;
         }
-        fs.writeFile(__dirname + "/data/file.json", fileContents, (err:any) => {
+        fs.writeFile(__dirname + "/../data/file.json", fileContents, (err:any) => {
             if(err) {
                 console.log("Error updating file", err)
                 emitError(socket, "Error saving updates");
