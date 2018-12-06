@@ -4,7 +4,7 @@ import * as IO from 'socket.io';
 
 import './types'
 
-import SocketServer from './SocketServer'
+import SocketServer from './server/SocketServer'
 import Route from './routes/Route'
 
 export default class App {

@@ -1,14 +1,20 @@
 import * as express from 'express';
 import * as http from 'http';
 
-import * as Application from '../App'
+import App_ from '../App'
+import SocketServer_ from '../server/SocketServer'
+import Socket_ from '../server/socket'
 
 declare global {
 
-    type App = Application.default;
+    type App = App_;
 
     interface Route {}
     type AppRequestHandler = (req:express.Request, res:express.Response, next:express.NextFunction, app:App) => any;
+
+    type SocketServer = SocketServer_;
+    type Socket = Socket_;
+
 
     type Express = express.Express;
     type RequestHandler = express.RequestHandler;
