@@ -2,7 +2,7 @@ import fs from 'fs'
 import path from 'path'
 
 import { DATA_DIR_PATH, DATA_FILE_PATH } from '../../Constants'
-import MockSocket from '../../socket/Socket'
+import MockClient from '../../Client'
 import UpdateEndpoint from '../Update';
 
 
@@ -20,10 +20,14 @@ jest.mock('fs', () => {
     }
 });
 
-jest.mock('../../socket/Socket');
+jest.mock('../../Client', () => jest.fn().mockImplementation(() => {
+    return {
+        onError: jest.fn()
+    }
+}));
 
 describe('UpdateEndpoint', () => {
-    const mockSocket = new MockSocket({}, null);
+    const mockClient = new (MockClient as any)(null);
     const mockServer = { 
         io: { emit: jest.fn() }
     }
@@ -38,7 +42,7 @@ describe('UpdateEndpoint', () => {
         (fs as any).shouldFail(false);
         const payload = "{}";
 
-        updateEndpoint.handleEndpoint(payload, mockSocket, mockServer)
+        updateEndpoint.handleEndpoint(payload, mockClient, mockServer)
 
         expect(fs.existsSync).toHaveBeenCalledWith(DATA_DIR_PATH);            
         expect(fs.mkdirSync).toHaveBeenCalledWith(DATA_DIR_PATH);
@@ -49,10 +53,10 @@ describe('UpdateEndpoint', () => {
     it('will emit error to socket on update failure', (done) => {
         (fs as any).shouldFail();
         try {
-            updateEndpoint.handleEndpoint("{}", mockSocket, mockServer)
+            updateEndpoint.handleEndpoint("{}", mockClient, mockServer)
 
             expect(fs.existsSync).toHaveBeenCalledWith(DATA_DIR_PATH);
-            expect(mockSocket.onError).toHaveBeenCalled();
+            expect(mockClient.onError).toHaveBeenCalled();
             expect(console.log).toHaveBeenCalled();
             done();
         } catch (e) {

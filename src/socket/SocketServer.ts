@@ -5,6 +5,7 @@ import autoBind from 'auto-bind';
 
 import Socket from './Socket'
 import Endpoint from '../endpoints/AbstractEndpoint';
+import Client from '../Client';
 
 export default class SocketServer {
     public io:any;
@@ -24,9 +25,9 @@ export default class SocketServer {
         return socket;
     }
 
-    handleEndpoint(endpointName:string, payload:string, socket:Socket) {
+    handleEndpoint(endpointName:string, payload:string, client:Client) {
         if (!this.validatePayload(payload)) {
-            socket.onError("update", "Invalid request data");
+            client.onError("update", "Invalid request data");
             return;
         }
 
@@ -35,7 +36,7 @@ export default class SocketServer {
             return;
         }  
 
-        endpoint.handleEndpoint(payload, socket, this);
+        endpoint.handleEndpoint(payload, client, this);
     }
 
     private validatePayload(payload:string):boolean {
