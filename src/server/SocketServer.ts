@@ -11,7 +11,7 @@ export default class SocketServer {
     public io:any;
     public endpoints:{ [s: string]: Endpoint };
 
-    constructor(httpServer:http.Server, endpoints:{ [s: string]: Endpoint }) {
+    constructor(httpServer:http.Server, endpoints:{ [s: string]: Endpoint }={}) {
         autoBind(this);
         this.endpoints = endpoints;
         this.io = IO(httpServer);
@@ -38,14 +38,6 @@ export default class SocketServer {
 
         endpoint.handleEndpoint(payload, socket, this);
     }
-
-        
-
-    onDisconnect(socket:Socket) {
-
-    }
-
-    
 
     private validatePayload(payload:string):boolean {
         try {
