@@ -1,10 +1,11 @@
 const path = require('path');
 
-import '../types'
+import Socket from '../server/Socket';
+import SocketServer from '../server/SocketServer';
 
 import Endpoint from '../Endpoint'
 
-import { makeDirAndWriteToFile } from './../helpers/FileHelper';
+import { makeDirAndWriteToFile } from '../helpers/FileHelper';
 
 export default class UpdateEndpoint extends Endpoint {
 

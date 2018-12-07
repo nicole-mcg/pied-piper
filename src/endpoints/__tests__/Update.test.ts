@@ -1,7 +1,7 @@
 const path = require('path');
 import MockSocket from '../../server/Socket'
-import UpdateEndpoint from './../Update';
-import { makeDirAndWriteToFile } from './../../helpers/FileHelper';
+import UpdateEndpoint from '../Update';
+import { makeDirAndWriteToFile } from '../../helpers/FileHelper';
 
 
 jest.mock('../../helpers/FileHelper', () => ({

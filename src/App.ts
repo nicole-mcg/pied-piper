@@ -1,8 +1,6 @@
-import createExpress from 'express';
+import express from 'express';
 import http from 'http';
 import autoBind from 'auto-bind';
-
-import './types';
 
 import SocketServer from './server/SocketServer';
 import UpdateEndpoint from './endpoints/Update';
@@ -10,16 +8,16 @@ import UpdateEndpoint from './endpoints/Update';
 export default class App {
 
     private port:number;
-    
-    private express:Express;
-    private httpServer:HttpServer;
+
+    private express:express.Express;
+    private httpServer:http.Server;
     private io:SocketServer;
 
     constructor(port:number=8000) {
         autoBind(this);
         this.port = port;
 
-        this.express = createExpress();
+        this.express = express();
         this.httpServer = new http.Server(this.express);
         this.io = new SocketServer(this.httpServer, {
             update: new UpdateEndpoint(),
