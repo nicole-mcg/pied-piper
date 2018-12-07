@@ -1,14 +1,16 @@
 import fs from 'fs'
 import path from 'path'
 
+import { DATA_DIR_PATH, DATA_FILE_PATH } from '../../Constants'
 import MockSocket from '../../socket/Socket'
-
 import Endpoint from '../AbstractEndpoint';
 import UpdateEndpoint from '../Update';
+
 
 jest.mock('fs', () => {
     let error:any = null;
     return {
+        shouldFail: (err={}) => error = err,
         existsSync: jest.fn().mockImplementation((path) => {
             if (error) {
                 throw new Error();
@@ -16,18 +18,12 @@ jest.mock('fs', () => {
         }),
         mkdirSync: jest.fn(),
         writeFileSync: jest.fn(),
-        shouldFail: (err={}) => error = err,
     }
 });
 
 jest.mock('../../socket/Socket');
 
 describe('UpdateEndpoint', () => {
-
-    const parentDir = path.normalize(__dirname+"/..");
-    const dirPath = parentDir + "/../../data";
-    const filePath = parentDir + "/../../data/file.json";
-
     const mockSocket = new MockSocket({}, null);
     const mockServer = { 
         io: { emit: jest.fn() }
@@ -46,12 +42,12 @@ describe('UpdateEndpoint', () => {
     it('can recieve an update from a socket', () => {
         (fs as any).shouldFail(false);
         const payload = "{}";
-        
+
         updateEndpoint.handleEndpoint(payload, mockSocket, mockServer)
 
-        expect(fs.existsSync).toHaveBeenCalledWith(dirPath);            
-        expect(fs.mkdirSync).toHaveBeenCalledWith(dirPath);
-        expect(fs.writeFileSync).toHaveBeenCalledWith(filePath, payload);
+        expect(fs.existsSync).toHaveBeenCalledWith(DATA_DIR_PATH);            
+        expect(fs.mkdirSync).toHaveBeenCalledWith(DATA_DIR_PATH);
+        expect(fs.writeFileSync).toHaveBeenCalledWith(DATA_FILE_PATH, payload);
         expect(mockServer.io.emit).toHaveBeenCalledWith('update', payload);
     });
 
@@ -60,7 +56,7 @@ describe('UpdateEndpoint', () => {
         try {
             updateEndpoint.handleEndpoint("{}", mockSocket, mockServer)
 
-            expect(fs.existsSync).toHaveBeenCalledWith(dirPath);
+            expect(fs.existsSync).toHaveBeenCalledWith(DATA_DIR_PATH);
             expect(mockSocket.emitError).toHaveBeenCalled();
             expect(console.log).toHaveBeenCalled();
             done();
