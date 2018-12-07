@@ -63,7 +63,6 @@ describe('HttpServer', () => {
                 method = method.toLowerCase();
                 expect(mockExpress).toHaveProperty(method);
                 const func = mockExpress[method]
-                console.log(method)
                 expect(func).toHaveBeenCalledWith(`/${endpoint}`, expect.any(Function))
             });
         })
