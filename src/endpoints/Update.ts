@@ -1,11 +1,11 @@
+import fs from 'fs';
+
 import path from 'path'
 
 import Socket from '../socket/Socket';
 import SocketServer from '../socket/SocketServer';
 
 import AbstractEndpoint from './AbstractEndpoint'
-
-import { makeDirAndWriteToFile } from '../helpers/FileHelper';
 
 export default class UpdateEndpoint extends AbstractEndpoint {
 
@@ -17,9 +17,17 @@ export default class UpdateEndpoint extends AbstractEndpoint {
         const dirPath = __dirname + "/../../data";
         const filePath = __dirname + "/../../data/file.json";
 
-        return makeDirAndWriteToFile(dirPath, filePath, payload)
-            .then(() => this.emitUpdate(payload, server))
-            .catch(() => this.onSaveError(socket));
+        try {
+            if (!fs.existsSync(dirPath)){
+                fs.mkdirSync(dirPath);
+            }
+
+            fs.writeFileSync(filePath, payload)
+            this.emitUpdate(payload, server);
+        } catch (error) {
+            console.log(`Error saving file: ${error}`)                
+            this.onSaveError(socket);
+        }
     }
 
     private emitUpdate(payload, server:SocketServer) {

@@ -1,13 +1,23 @@
+import fs from 'fs'
 import path from 'path'
 
 import MockSocket from '../../socket/Socket'
 import UpdateEndpoint from '../Update';
-import { makeDirAndWriteToFile } from '../../helpers/FileHelper';
 
-jest.mock('../../helpers/FileHelper', () => ({
-    makeDirAndWriteToFile: jest.fn().mockReturnValue(Promise.resolve())
-}));
 jest.mock('../../socket/Socket');
+jest.mock('fs', () => {
+    let error:any = null;
+    return {
+        existsSync: jest.fn().mockImplementation((path) => {
+            if (error) {
+                throw new Error();
+            }
+        }),
+        mkdirSync: jest.fn(),
+        writeFileSync: jest.fn(),
+        shouldFail: (err={}) => error = err,
+    }
+});
 
 describe('UpdateEndpoint', () => {
 
@@ -31,29 +41,37 @@ describe('UpdateEndpoint', () => {
         mockSocket = new MockSocket({}, mockServer.app);
     });
 
-    it('can recieve an update from a socket', () => {
-        const promise = updateEndpoint.handleEndpoint(payload, mockSocket, mockServer)
-            .then(() => {
-                expect(makeDirAndWriteToFile).toHaveBeenCalledWith(dirPath, filePath, payload);
-                expect(mockServer.io.emit).toHaveBeenCalledWith('update', payload);
-            });
+    afterEach(() => {
+        jest.restoreAllMocks();
+    })
 
-        expect(promise).resolves;        
+    it('can recieve an update from a socket', (done) => {
+        try {
+            updateEndpoint.handleEndpoint(payload, mockSocket, mockServer)
+            expect(fs.existsSync).toHaveBeenCalledWith(dirPath);            
+            expect(fs.mkdirSync).toHaveBeenCalledWith(dirPath);
+            expect(fs.writeFileSync).toHaveBeenCalledWith(filePath, payload);
+            expect(mockServer.io.emit).toHaveBeenCalledWith('update', payload);
+            done();
+        } catch(e) {
+            done.fail(e);
+        }
     });
 
-    it('will emit error to socket on update failure', () => {
-        (makeDirAndWriteToFile as any).mockReturnValueOnce(Promise.reject())
+    it('will emit error to socket on update failure', (done) => {
+        const oldLog = console.log;
+        console.log = jest.fn();
 
-        const promise = updateEndpoint.handleEndpoint(payload, mockSocket, mockServer)
-            .catch(() => {
-                expect(makeDirAndWriteToFile).toHaveBeenCalledWith(dirPath, filePath, payload);                
-                expect(mockSocket.emitError).toHaveBeenCalledWith("update", "Invalid request data");
-            })
-
-        expect(promise).rejects;
+        (fs as any).shouldFail();
+        try {
+            updateEndpoint.handleEndpoint(payload, mockSocket, mockServer)
+            expect(fs.existsSync).toHaveBeenCalledWith(dirPath);
+            expect(mockSocket.emitError).toHaveBeenCalled();
+            expect(console.log).toHaveBeenCalled();
+            console.log = oldLog;
+            done();
+        } catch (e) {
+            done.fail(e)
+        }
     });
-
-    function createMockSocket(stub={}):any {
-        return new MockSocket(stub, mockServer.app);
-    }
 })

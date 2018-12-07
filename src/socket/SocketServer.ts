@@ -3,7 +3,6 @@ import IO from 'socket.io';
 
 import autoBind from 'auto-bind';
 
-import { makeDirAndWriteToFile } from '../helpers/FileHelper'
 import Socket from './Socket'
 import Endpoint from '../endpoints/AbstractEndpoint';
 
