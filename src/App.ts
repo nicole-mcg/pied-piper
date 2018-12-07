@@ -21,7 +21,7 @@ export default class App {
         autoBind(this);
 
         this.express = express();
-        this.httpServer = new HttpServer(port, ENDPOINTS, this.express);
+        this.httpServer = new HttpServer(port, this.express, ENDPOINTS);
         this.io = this.httpServer.socketServer;
 
         this.httpServer.start();
