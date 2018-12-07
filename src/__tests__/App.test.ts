@@ -1,10 +1,11 @@
 
 import App from '../App'
 import SocketServer from '../socket/SocketServer';
+import mockExpress from 'jest-express';
 
-jest.mock('express', () => {
-    return require('jest-express');
-});
+jest.mock('express', () => jest.fn().mockImplementation(() => {
+    return mockExpress;
+}));
 jest.mock('http');
 
 jest.mock("../socket/SocketServer");
