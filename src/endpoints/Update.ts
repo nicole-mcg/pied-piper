@@ -1,4 +1,4 @@
-const path = require('path');
+import path from 'path'
 
 import Socket from '../socket/Socket';
 import SocketServer from '../socket/SocketServer';

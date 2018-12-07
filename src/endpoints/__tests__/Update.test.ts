@@ -1,4 +1,5 @@
-const path = require('path');
+import path from 'path'
+
 import MockSocket from '../../socket/Socket'
 import UpdateEndpoint from '../Update';
 import { makeDirAndWriteToFile } from '../../helpers/FileHelper';

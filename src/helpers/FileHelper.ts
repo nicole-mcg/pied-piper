@@ -1,4 +1,4 @@
-const fs = require('fs');
+import fs from 'fs'
 
 export function makeDirIfNotExists(path:string):Promise<any> {
     return new Promise((resolve, reject) => {
