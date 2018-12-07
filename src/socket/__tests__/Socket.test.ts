@@ -1,6 +1,9 @@
+import IO from 'socket.io'
+
 import Socket from '../Socket'
 import MockSocketServer from '../SocketServer';
 
+jest.mock('socket.io')
 jest.mock('../SocketServer');
 jest.mock('uuid/v4', () => (
     () => "test"
@@ -9,13 +12,9 @@ jest.mock('uuid/v4', () => (
 describe('Socket', () => {
 
     let socket:any = null;
-    const mockIoSocket = {
-        on: jest.fn(),
-        emit: jest.fn(),
-    };
 
     beforeEach(() => {
-        socket = new Socket(mockIoSocket, new MockSocketServer(null, {}));
+        socket = new Socket(IO(), new MockSocketServer(null, {}));
     })
 
     afterEach(() => {
@@ -24,10 +23,10 @@ describe('Socket', () => {
 
     it('can be created', () => {
         expect(socket).toBeTruthy();
-        expect(socket.ioSocket).toBe(mockIoSocket);
+        expect(socket.ioSocket).toBe(IO());
         expect(socket.id).toEqual('test');
 
-        expect(mockIoSocket.on).toHaveBeenCalledWith('update', socket.onUpdate)
+        expect(IO().on).toHaveBeenCalledWith('update', socket.onUpdate)
     });
 
     it('will notify the server on update', () => {
@@ -46,7 +45,7 @@ describe('Socket', () => {
 
         socket.emitError(endpoint, message);
 
-        expect(mockIoSocket.emit).toHaveBeenCalledWith('onerror', expectedPayload);
+        expect(IO().emit).toHaveBeenCalledWith('onerror', expectedPayload);
     });
 
 });
