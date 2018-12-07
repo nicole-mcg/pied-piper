@@ -1,20 +1,22 @@
-import IO from 'socket.io'
+import mockUuidv4 from 'uuid/v4'
+import mockIo from 'socket.io'
 
-import Socket from '../Socket'
 import MockSocketServer from '../SocketServer';
+import Socket from '../Socket'
 
 jest.mock('socket.io')
-jest.mock('../SocketServer');
 jest.mock('uuid/v4', () => (
     () => "test"
 ));
+
+jest.mock('../SocketServer');
 
 describe('Socket', () => {
 
     let socket:any = null;
 
     beforeEach(() => {
-        socket = new Socket(IO(), new MockSocketServer(null, {}));
+        socket = new Socket(mockIo(), new MockSocketServer(null, {}));
     })
 
     afterEach(() => {
@@ -23,10 +25,10 @@ describe('Socket', () => {
 
     it('can be created', () => {
         expect(socket).toBeTruthy();
-        expect(socket.ioSocket).toBe(IO());
-        expect(socket.id).toEqual('test');
+        expect(socket.ioSocket).toBe(mockIo());
+        expect(socket.id).toEqual(mockUuidv4());
 
-        expect(IO().on).toHaveBeenCalledWith('update', socket.onUpdate)
+        expect(mockIo().on).toHaveBeenCalledWith('update', socket.onUpdate)
     });
 
     it('will notify the server on update', () => {
@@ -45,7 +47,7 @@ describe('Socket', () => {
 
         socket.emitError(endpoint, message);
 
-        expect(IO().emit).toHaveBeenCalledWith('onerror', expectedPayload);
+        expect(mockIo().emit).toHaveBeenCalledWith('onerror', expectedPayload);
     });
 
 });

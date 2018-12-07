@@ -1,6 +1,6 @@
 
 import http from 'http'
-import IO from 'socket.io';
+import mockIo from 'socket.io';
 
 import Socket from './../Socket';
 import SocketServer from '../SocketServer'
@@ -36,13 +36,13 @@ describe('SocketServer', () => {
         expect(socketServer).toBeTruthy();
         expect(socketServer.endpoints).toEqual(endpoints);
         expect(socketServer.io).toBeTruthy();
-        expect(IO().on).toBeCalledWith('connection', socketServer.onConnectionRecieved);
+        expect(mockIo().on).toBeCalledWith('connection', socketServer.onConnectionRecieved);
     });
 
     it('can accept a socket', () => {
-        const recievedSocket = socketServer.onConnectionRecieved(IO());
+        const recievedSocket = socketServer.onConnectionRecieved(mockIo());
 
-        expect(Socket).toHaveBeenCalledWith(IO(), socketServer);
+        expect(Socket).toHaveBeenCalledWith(mockIo(), socketServer);
         expect(recievedSocket).toBeTruthy();
         expect(console.log).toHaveBeenCalled();
     });
