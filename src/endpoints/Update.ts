@@ -3,11 +3,11 @@ const path = require('path');
 import Socket from '../server/Socket';
 import SocketServer from '../server/SocketServer';
 
-import Endpoint from '../Endpoint'
+import AbstractEndpoint from './AbstractEndpoint'
 
 import { makeDirAndWriteToFile } from '../helpers/FileHelper';
 
-export default class UpdateEndpoint extends Endpoint {
+export default class UpdateEndpoint extends AbstractEndpoint {
 
     constructor() {
         super();

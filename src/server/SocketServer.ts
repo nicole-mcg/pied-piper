@@ -5,13 +5,13 @@ import autoBind from 'auto-bind';
 
 import { makeDirAndWriteToFile } from '../helpers/FileHelper'
 import Socket from './Socket'
-import Endpoint from '../Endpoint';
+import AbstractEndpoint from '../endpoints/AbstractEndpoint';
 
 export default class SocketServer {
     public io:any;
-    public endpoints:{ [s: string]: Endpoint };
+    public endpoints:{ [s: string]: AbstractEndpoint };
 
-    constructor(httpServer:http.Server, endpoints:{ [s: string]: Endpoint }) {
+    constructor(httpServer:http.Server, endpoints:{ [s: string]: AbstractEndpoint }) {
         autoBind(this);
         this.endpoints = endpoints;
         this.io = IO(httpServer);
@@ -31,7 +31,7 @@ export default class SocketServer {
             return;
         }
 
-        const endpoint:Endpoint = this.endpoints[endpointName];
+        const endpoint:AbstractEndpoint = this.endpoints[endpointName];
         if (!endpoint) {
             return;
         }  
