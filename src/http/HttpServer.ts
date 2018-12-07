@@ -18,7 +18,11 @@ export default class HttpServer {
         this.baseServer = new http.Server(express);
         this.socketServer = new SocketServer(this.baseServer, this.endpoints);
 
-        Object.keys(endpoints).forEach((endpoint) => {
+        this.registerEndpoints(express);
+    }
+
+    private registerEndpoints(express:express.Express) {
+        Object.keys(this.endpoints).forEach((endpoint) => {
             express.get(`/${endpoint}`, (req:express.Request, res:express.Response) => {
                 const httpClient:HttpClient = new HttpClient(req, res, this.socketServer);
                 const payload = Object.keys(req.query).length === 0 ? "" : JSON.stringify(req.query);
