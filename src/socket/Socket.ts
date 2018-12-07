@@ -1,19 +1,20 @@
 import uuidv4 from 'uuid/v4';
-
 import autoBind from 'auto-bind';
-import SocketServer from './SocketServer';
 
-export default class Socket {
-    private server:SocketServer;
+import SocketServer from './SocketServer';
+import Client from '../Client';
+
+
+export default class Socket extends Client {
     public readonly id:string;
     private ioSocket:any;
 
     constructor(ioSocket:any, server:SocketServer) {
+        super(server);
         autoBind(this);
 
         this.ioSocket = ioSocket;
-        this.server = server;
-
+ 
         this.id = uuidv4();
         
         Object.keys(server.endpoints).forEach((endpoint) => {
@@ -21,9 +22,7 @@ export default class Socket {
         })
     }
 
-    handleRequest(endpoint:string, payload:string) {
-        this.server.handleEndpoint(endpoint, payload, this);
-    }
+   
 
     onError(endpoint:string, message:string) {
         const payload = {
