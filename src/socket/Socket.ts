@@ -25,7 +25,7 @@ export default class Socket {
         this.server.handleEndpoint(endpoint, payload, this);
     }
 
-    emitError(endpoint:string, message:string) {
+    onError(endpoint:string, message:string) {
         const payload = {
             endpoint,
             message

@@ -53,7 +53,7 @@ describe('UpdateEndpoint', () => {
             updateEndpoint.handleEndpoint("{}", mockSocket, mockServer)
 
             expect(fs.existsSync).toHaveBeenCalledWith(DATA_DIR_PATH);
-            expect(mockSocket.emitError).toHaveBeenCalled();
+            expect(mockSocket.onError).toHaveBeenCalled();
             expect(console.log).toHaveBeenCalled();
             done();
         } catch (e) {

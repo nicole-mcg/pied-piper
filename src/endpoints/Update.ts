@@ -32,7 +32,7 @@ export default class UpdateEndpoint extends AbstractEndpoint {
     }
 
     private onSaveError(socket) {
-        socket.emitError('update', "Error saving data");
+        socket.onError('update', "Error saving data");
     }
 
 }

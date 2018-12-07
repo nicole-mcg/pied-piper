@@ -26,7 +26,7 @@ export default class SocketServer {
 
     handleEndpoint(endpointName:string, payload:string, socket:Socket) {
         if (!this.validatePayload(payload)) {
-            socket.emitError("update", "Invalid request data");
+            socket.onError("update", "Invalid request data");
             return;
         }
 

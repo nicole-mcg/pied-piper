@@ -12,25 +12,22 @@ jest.mock('socket.io');
 jest.mock('../Socket');
 
 describe('SocketServer', () => {
-    const socket:any = {};
-    const endpoint:any = {};
-    const endpoints:any = { test: endpoint };
-    const payload:string = "{}";
+    const mockSocket = { onError: jest.fn() };
+    const mockEndpoint:any = { handleEndpoint: jest.fn() };
+    const mockEndpoints:any = { test: mockEndpoint };
+    const mockPayload:string = "{}";
 
     let socketServer:any = null;
     let mockHttpServer:any;
 
     beforeEach(() => {
         mockHttpServer = new http.Server();
-        socketServer = new SocketServer(mockHttpServer, endpoints);
-
-        endpoint.handleEndpoint = jest.fn();
-        socket.emitError = jest.fn();
+        socketServer = new SocketServer(mockHttpServer, mockEndpoints);
     });
 
     it('can be created', () => {
         expect(socketServer).toBeTruthy();
-        expect(socketServer.endpoints).toEqual(endpoints);
+        expect(socketServer.endpoints).toEqual(mockEndpoints);
         expect(socketServer.io).toBeTruthy();
         expect(mockIo().on).toBeCalledWith('connection', socketServer.onConnectionRecieved);
     });
@@ -54,22 +51,22 @@ describe('SocketServer', () => {
     it('can handle an endpoint', () => {
         socketServer.validatePayload = jest.fn().mockReturnValue(true);
         
-        socketServer.handleEndpoint('test', payload, socket);
+        socketServer.handleEndpoint('test', mockPayload, mockSocket);
 
-        expect(endpoint.handleEndpoint)
-            .toHaveBeenCalledWith(payload, socket, socketServer);
+        expect(mockEndpoint.handleEndpoint)
+            .toHaveBeenCalledWith(mockPayload, mockSocket, socketServer);
         expect(socketServer.validatePayload)
-            .toHaveBeenCalledWith(payload);
+            .toHaveBeenCalledWith(mockPayload);
     });
 
     it('wont handle an endpoint if invalid payload', () => {
         socketServer.validatePayload = jest.fn().mockReturnValue(false);
         
-        socketServer.handleEndpoint('test', payload, socket);
+        socketServer.handleEndpoint('test', mockPayload, mockSocket);
 
-        expect(endpoint.handleEndpoint).not.toHaveBeenCalled();
-        expect(socketServer.validatePayload).toHaveBeenCalledWith(payload);
-        expect(socket.emitError).toHaveBeenCalled();
+        expect(mockEndpoint.handleEndpoint).not.toHaveBeenCalled();
+        expect(socketServer.validatePayload).toHaveBeenCalledWith(mockPayload);
+        expect(mockSocket.onError).toHaveBeenCalled();
     });
 
 });
