@@ -1,6 +1,7 @@
 import mockUuidv4 from 'uuid/v4'
 import mockIo from 'socket.io'
 
+import Client from '../../Client';
 import MockSocketServer from '../SocketServer';
 import Socket from '../Socket'
 
@@ -24,7 +25,7 @@ describe('Socket', () => {
     })
 
     it('can be created', () => {
-        expect(socket).toBeTruthy();
+        expect(socket).toBeInstanceOf(Client);
         expect(socket.ioSocket).toBe(mockIo());
         expect(socket.id).toEqual(mockUuidv4());
 

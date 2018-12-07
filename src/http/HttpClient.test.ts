@@ -1,4 +1,4 @@
-
+import Client from '../Client';
 import HttpClient from './HttpClient';
 
 describe('HttpClient', () => {
@@ -13,7 +13,7 @@ describe('HttpClient', () => {
     })
 
     it('can be created', () => {
-        expect(httpClient).toBeTruthy();
+        expect(httpClient).toBeInstanceOf(Client);
         expect(httpClient).toHaveProperty('req', req);
         expect(httpClient).toHaveProperty('req', req);
         expect(httpClient).toHaveProperty('server', server);
