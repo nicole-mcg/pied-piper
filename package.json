@@ -14,7 +14,6 @@
     "@types/node": "^10.12.12",
     "auto-bind": "^1.2.1",
     "express": "^4.16.4",
-    "jest-express": "^1.9.0",
     "socket.io": "^2.2.0",
     "ts-node": "^7.0.1",
     "typescript": "^3.2.1",
