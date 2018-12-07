@@ -26,7 +26,4 @@ export default class UpdateEndpoint extends AbstractEndpoint {
             client.onError('update', "Error saving data");
         }
     }
-
-    private emitUpdate(payload, server:SocketServer) {
-    }
 }
