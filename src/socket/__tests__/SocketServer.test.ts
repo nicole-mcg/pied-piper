@@ -2,7 +2,7 @@
 import http from 'http'
 import mockIo from 'socket.io';
 
-import Socket from './../Socket';
+import MockSocket from './../Socket';
 import SocketServer from '../SocketServer'
 
 jest.mock('express');
@@ -35,7 +35,7 @@ describe('SocketServer', () => {
     it('can accept a socket', () => {
         const recievedSocket = socketServer.onConnectionRecieved(mockIo());
 
-        expect(Socket).toHaveBeenCalledWith(mockIo(), socketServer);
+        expect(MockSocket).toHaveBeenCalledWith(mockIo(), socketServer);
         expect(recievedSocket).toBeTruthy();
         expect(console.log).toHaveBeenCalled();
     });
