@@ -12,7 +12,7 @@ export default abstract class Client {
     abstract onSuccess(endpoint:string, payload:string);
     abstract onError(endpoint:string, message:string);
 
-    onRequest(endpoint:string, payload:string) {
-        this.server.handleEndpoint(endpoint, payload, this as unknown as Socket);
+    onRequest(endpoint:string, payload:string, method:string) {
+        this.server.handleEndpoint(endpoint, payload, this as unknown as Socket, method);
     }
 }

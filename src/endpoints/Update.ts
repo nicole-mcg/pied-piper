@@ -3,11 +3,11 @@ import fs from 'fs';
 import { DATA_DIR_PATH, DATA_FILE_PATH } from './../Constants';
 import Client from '../Client';
 import SocketServer from '../socket/SocketServer';
-import AbstractEndpoint from './AbstractEndpoint'
+import Endpoint from './Endpoint'
 
-export default class UpdateEndpoint extends AbstractEndpoint {
+export default class UpdateEndpoint extends Endpoint {
     
-    handleEndpoint(payload:string, client:Client, server:SocketServer) {
+    put(payload:string, client:Client, server:SocketServer) {
         try {
             if (!fs.existsSync(DATA_DIR_PATH)){
                 fs.mkdirSync(DATA_DIR_PATH);
@@ -21,4 +21,5 @@ export default class UpdateEndpoint extends AbstractEndpoint {
             client.onError('update', "Error saving data");
         }
     }
+
 }

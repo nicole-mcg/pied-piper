@@ -34,11 +34,11 @@ describe('UpdateEndpoint', () => {
         updateEndpoint = new UpdateEndpoint();
     });
 
-    it('can recieve an update from a socket', () => {
+    it('can recieve an update', () => {
         (fs as any).shouldFail(false);
         const payload = "{}";
 
-        updateEndpoint.handleEndpoint(payload, mockClient, mockServer)
+        updateEndpoint.put(payload, mockClient, mockServer)
 
         expect(fs.existsSync).toHaveBeenCalledWith(DATA_DIR_PATH);            
         expect(fs.mkdirSync).toHaveBeenCalledWith(DATA_DIR_PATH);
@@ -50,7 +50,7 @@ describe('UpdateEndpoint', () => {
     it('will emit error to socket on update failure', (done) => {
         (fs as any).shouldFail();
         try {
-            updateEndpoint.handleEndpoint("{}", mockClient, mockServer)
+            updateEndpoint.put("{}", mockClient, mockServer)
 
             expect(fs.existsSync).toHaveBeenCalledWith(DATA_DIR_PATH);
             expect(mockClient.onError).toHaveBeenCalledWith('update', expect.any(String));

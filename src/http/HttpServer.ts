@@ -1,9 +1,10 @@
 import express from 'express'
 import http from 'http'
 
-import Endpoint from '../endpoints/AbstractEndpoint'
+import Endpoint from '../endpoints/Endpoint'
 import SocketServer from './../socket/SocketServer';
 import HttpClient from './HttpClient'
+import { METHODS } from '../Constants'
 
 export default class HttpServer {
     private port:number;
@@ -23,12 +24,19 @@ export default class HttpServer {
 
     private registerEndpoints(express:express.Express) {
         Object.keys(this.endpoints).forEach((endpoint) => {
-            express.get(`/${endpoint}`, (req:express.Request, res:express.Response) => {
-                const httpClient:HttpClient = new HttpClient(req, res, this.socketServer);
-                const payload = Object.keys(req.query).length === 0 ? "" : JSON.stringify(req.query);
-                this.socketServer.handleEndpoint(endpoint, payload, httpClient);
-            })
+            METHODS.forEach((method) => {
+                const functionName = method.toLowerCase();
+                express[functionName](`/${endpoint}`, this.createRouteHandler(endpoint, method));
+            });
         });
+    }
+
+    private createRouteHandler(endpoint, method) {
+        return (req:express.Request, res:express.Response) => {
+            const httpClient:HttpClient = new HttpClient(req, res, this.socketServer);
+            const payload = Object.keys(req.query).length === 0 ? "" : JSON.stringify(req.query);
+            this.socketServer.handleEndpoint(endpoint, payload, httpClient, method);
+        }
     }
 
     public start() {

@@ -4,6 +4,7 @@ import mockIo from 'socket.io';
 
 import MockSocket from './../Socket';
 import SocketServer from '../SocketServer'
+import { METHODS } from '../../Constants'
 
 jest.mock('express');
 jest.mock('http');
@@ -13,7 +14,10 @@ jest.mock('../Socket');
 
 describe('SocketServer', () => {
     const mockClient = { onError: jest.fn() };
-    const mockEndpoint:any = { handleEndpoint: jest.fn() };
+    const mockEndpoint:any = METHODS.reduce((handlers, method) => {
+        handlers[method.toLowerCase()] = jest.fn();
+        return handlers;
+    }, {})
     const mockEndpoints:any = { test: mockEndpoint };
     const mockPayload:string = "{}";
 
@@ -48,15 +52,18 @@ describe('SocketServer', () => {
         expect(socketServer.validatePayload("invalid json")).toBe(false);
     });
 
-    it('can handle an endpoint', () => {
-        socketServer.validatePayload = jest.fn().mockReturnValue(true);
-        
-        socketServer.handleEndpoint('test', mockPayload, mockClient);
-
-        expect(mockEndpoint.handleEndpoint)
-            .toHaveBeenCalledWith(mockPayload, mockClient, socketServer);
-        expect(socketServer.validatePayload)
-            .toHaveBeenCalledWith(mockPayload);
+    METHODS.forEach(method => {
+        method = method.toLowerCase();
+        it(`can handle an endpoint with method: ${method}`, () => {
+            socketServer.validatePayload = jest.fn().mockReturnValue(true);
+            
+            socketServer.handleEndpoint('test', mockPayload, mockClient, method);
+    
+            expect(mockEndpoint[method])
+                .toHaveBeenCalledWith(mockPayload, mockClient, socketServer);
+            expect(socketServer.validatePayload)
+                .toHaveBeenCalledWith(mockPayload);
+        });
     });
 
     it('wont handle an endpoint if invalid payload', () => {
@@ -64,7 +71,9 @@ describe('SocketServer', () => {
         
         socketServer.handleEndpoint('test', mockPayload, mockClient);
 
-        expect(mockEndpoint.handleEndpoint).not.toHaveBeenCalled();
+        METHODS.forEach((method) => {
+            expect(mockEndpoint[method.toLowerCase()]).not.toHaveBeenCalled();
+        })
         expect(socketServer.validatePayload).toHaveBeenCalledWith(mockPayload);
         expect(mockClient.onError).toHaveBeenCalled();
     });

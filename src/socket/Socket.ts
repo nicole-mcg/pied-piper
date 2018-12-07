@@ -4,6 +4,7 @@ import autoBind from 'auto-bind';
 import SocketServer from './SocketServer';
 import Client from '../Client';
 import UpdateEndpoint from './../endpoints/Update';
+import { METHODS } from '../Constants';
 
 export default class Socket extends Client {
     public readonly id:string;
@@ -18,7 +19,9 @@ export default class Socket extends Client {
         this.id = uuidv4();
         
         Object.keys(server.endpoints).forEach((endpoint) => {
-            ioSocket.on(endpoint, (payload) => this.onRequest(endpoint, payload));
+            METHODS.forEach((method) => {
+                ioSocket.on(`${endpoint}/${method.toLowerCase()}`, (payload) => this.onRequest(endpoint, payload, method));
+            })
         })
     }
 

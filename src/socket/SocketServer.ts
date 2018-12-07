@@ -4,7 +4,7 @@ import IO from 'socket.io';
 import autoBind from 'auto-bind';
 
 import Socket from './Socket'
-import Endpoint from '../endpoints/AbstractEndpoint';
+import Endpoint from '../endpoints/Endpoint';
 import Client from '../Client';
 
 export default class SocketServer {
@@ -25,7 +25,7 @@ export default class SocketServer {
         return socket;
     }
 
-    handleEndpoint(endpointName:string, payload:string, client:Client) {
+    handleEndpoint(endpointName:string, payload:string, client:Client, method:string) {
         if (!this.validatePayload(payload)) {
             client.onError("update", "Invalid request data");
             return;
@@ -36,7 +36,8 @@ export default class SocketServer {
             return;
         }  
 
-        endpoint.handleEndpoint(payload, client, this);
+        const funcName = method.toLowerCase();
+        endpoint[funcName](payload, client, this);
     }
 
     private validatePayload(payload:string):boolean {

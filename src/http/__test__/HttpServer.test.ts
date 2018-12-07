@@ -4,12 +4,17 @@ import express from 'express';
 
 import MockSocketServer from '../../socket/SocketServer';
 import HttpServer from './../HttpServer';
+import { METHODS } from '../../Constants'
 
 jest.mock('http');
 jest.mock('express', () => {
     return jest.fn().mockImplementation(() => {
         return {
-            get: jest.fn()
+            get: jest.fn(),
+            post: jest.fn(),
+            put: jest.fn(),
+            patch: jest.fn(),
+            delete: jest.fn(),
         }
     })
 });
@@ -19,7 +24,7 @@ jest.mock("../../socket/SocketServer");
 describe('HttpServer', () => {
     const mockEndpoint:any = { handleEndpoint: jest.fn() };
     const mockEndpoints = { 'test': mockEndpoint }
-    const mockExpress = express();
+    const mockExpress:any = express();
     const testPort = 99;
 
     it('can be created', () => {
@@ -54,7 +59,13 @@ describe('HttpServer', () => {
         httpServer.registerEndpoints(mockExpress);
 
         Object.keys(mockEndpoints).forEach((endpoint) => {
-            expect(mockExpress.get).toHaveBeenCalledWith(`/${endpoint}`, expect.any(Function))
+            METHODS.forEach(method => {
+                method = method.toLowerCase();
+                expect(mockExpress).toHaveProperty(method);
+                const func = mockExpress[method]
+                console.log(method)
+                expect(func).toHaveBeenCalledWith(`/${endpoint}`, expect.any(Function))
+            });
         })
     });
 
