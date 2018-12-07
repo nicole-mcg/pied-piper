@@ -3,12 +3,10 @@ import MockSocket from '../../server/Socket'
 import UpdateEndpoint from '../Update';
 import { makeDirAndWriteToFile } from '../../helpers/FileHelper';
 
-
 jest.mock('../../helpers/FileHelper', () => ({
     makeDirAndWriteToFile: jest.fn().mockReturnValue(Promise.resolve())
 }));
 jest.mock('../../server/Socket');
-
 
 describe('UpdateEndpoint', () => {
 
