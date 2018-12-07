@@ -20,10 +20,10 @@ describe('App', () => {
     })
 
     it('can be created', () => {
-        expect(app).toBeTruthy()
-        expect(app.port).toBe(testPort);
-        expect(app.httpServer).toBeTruthy();
-        expect(app.io).toBeTruthy();
+        expect(app).toBeInstanceOf(App)
+        expect(app).toHaveProperty('port', testPort);
+        expect(app).toHaveProperty('httpServer')
+        expect(app).toHaveProperty('io')
         expect(SocketServer as any).toHaveBeenCalled();
     });
 

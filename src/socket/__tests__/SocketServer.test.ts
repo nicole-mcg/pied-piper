@@ -26,9 +26,9 @@ describe('SocketServer', () => {
     });
 
     it('can be created', () => {
-        expect(socketServer).toBeTruthy();
-        expect(socketServer.endpoints).toEqual(mockEndpoints);
-        expect(socketServer.io).toBeTruthy();
+        expect(socketServer).toBeInstanceOf(SocketServer);
+        expect(socketServer).toHaveProperty('endpoints', mockEndpoints);
+        expect(socketServer).toHaveProperty('io');
         expect(mockIo().on).toBeCalledWith('connection', socketServer.onConnectionRecieved);
     });
 
