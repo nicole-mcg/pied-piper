@@ -22,7 +22,7 @@ describe('HttpClient', () => {
     it('can send report success back to the client', () => {
         const payload = 'test';
         
-        httpClient.onSuccess('', payload);
+        httpClient.onSuccess(payload);
 
         expect(res.send).toHaveBeenCalledWith(payload);
     })
@@ -31,7 +31,7 @@ describe('HttpClient', () => {
         const errorMessage = 'test';
         const expectedPayload = JSON.stringify({ error: errorMessage });
 
-        httpClient.onError('', errorMessage);
+        httpClient.onError(errorMessage);
 
         expect(res.send).toHaveBeenCalledWith(expectedPayload);
     });

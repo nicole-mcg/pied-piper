@@ -47,13 +47,11 @@ describe('Socket', () => {
     });
 
     it('can emit an error', () => {
-        const endpoint:string = "update";
         const message:string = "Could not update";
-        const expectedPayload = JSON.stringify({ endpoint, message })
 
-        socket.onError(endpoint, message);
+        socket.onError(message);
 
-        expect(mockIo().emit).toHaveBeenCalledWith('onerror', expectedPayload);
+        expect(mockIo().emit).toHaveBeenCalledWith('onerror', message);
     });
 
 });

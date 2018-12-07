@@ -25,16 +25,12 @@ export default class Socket extends Client {
         })
     }
 
-    onSuccess(endpoint:string, payload:string) {
+    onSuccess(payload:string) {
         //TODO confirm success with socket.io
     }
 
-    onError(endpoint:string, message:string) {
-        const payload = {
-            endpoint,
-            message
-        }
+    onError(message:string) {
         //TODO confirm error with socket.io (don't emit)
-        this.ioSocket.emit('onerror', JSON.stringify(payload));
+        this.ioSocket.emit('onerror', message);
     }
 }

@@ -9,8 +9,8 @@ export default abstract class Client {
         this.server = server;
     }
 
-    abstract onSuccess(endpoint:string, payload:string);
-    abstract onError(endpoint:string, message:string);
+    abstract onSuccess(payload:string);
+    abstract onError(message:string);
 
     onRequest(endpoint:string, payload:string, method:string) {
         this.server.handleEndpoint(endpoint, payload, this as unknown as Socket, method);

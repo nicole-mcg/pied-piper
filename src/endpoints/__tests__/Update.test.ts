@@ -43,7 +43,7 @@ describe('UpdateEndpoint', () => {
         expect(fs.existsSync).toHaveBeenCalledWith(DATA_DIR_PATH);            
         expect(fs.mkdirSync).toHaveBeenCalledWith(DATA_DIR_PATH);
         expect(fs.writeFileSync).toHaveBeenCalledWith(DATA_FILE_PATH, payload);
-        expect(mockClient.onSuccess).toHaveBeenCalledWith('update', payload);
+        expect(mockClient.onSuccess).toHaveBeenCalledWith(payload);
         expect(mockServer.io.emit).toHaveBeenCalledWith('update', payload);
     });
 
@@ -53,7 +53,7 @@ describe('UpdateEndpoint', () => {
             updateEndpoint.put("{}", mockClient, mockServer)
 
             expect(fs.existsSync).toHaveBeenCalledWith(DATA_DIR_PATH);
-            expect(mockClient.onError).toHaveBeenCalledWith('update', expect.any(String));
+            expect(mockClient.onError).toHaveBeenCalledWith(expect.any(String));
             expect(console.log).toHaveBeenCalled();
             done();
         } catch (e) {
