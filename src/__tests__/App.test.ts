@@ -1,17 +1,19 @@
+import mockExpress from 'express';
+
 import App, { ENDPOINTS } from '../App'
-import SocketServer from '../socket/SocketServer';
+import MockHttpServer from '../http/HttpServer';
+import MockSocketServer from '../socket/SocketServer';
 
-jest.mock('http');
-jest.mock('express', () => {
-    return jest.fn().mockImplementation(() => {
-        return {
-            get: jest.fn()
-        }
-    })
-});
+const httpServerStub = {
+    socketServer: new MockSocketServer(null),
+    start: jest.fn(),
+}
 
+jest.mock('express');
 jest.mock("../socket/SocketServer");
-jest.mock("../endpoints/Update");
+jest.mock('../http/HttpServer', () =>
+    jest.fn<MockHttpServer>().mockImplementation(() => httpServerStub)
+)
 
 describe('App', () => {
     const testPort = 99;
@@ -24,21 +26,12 @@ describe('App', () => {
 
     it('can be created', () => {
         expect(app).toBeInstanceOf(App)
-        expect(app).toHaveProperty('port', testPort);
         expect(app).toHaveProperty('express');
         expect(app).toHaveProperty('httpServer')
-        expect(app).toHaveProperty('io')
+        expect(app).toHaveProperty('io', httpServerStub.socketServer);;
 
-        expect(SocketServer as any).toHaveBeenCalledWith(app.httpServer, ENDPOINTS);
-        Object.keys(ENDPOINTS).forEach((endpoint) => {
-            expect(app.express.get).toHaveBeenCalledWith(`/${endpoint}`, expect.any(Function))
-        })
-    });
-
-    it('can be started', () => {
-        app.httpServer.listen = jest.fn();
-        app.start();
-        expect(app.httpServer.listen).toHaveBeenCalledWith(testPort);
+        expect(MockHttpServer as any).toHaveBeenCalledWith(testPort, ENDPOINTS, mockExpress());
+        expect(httpServerStub.start).toHaveBeenCalled();
     });
 
 });

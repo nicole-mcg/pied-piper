@@ -1,5 +1,4 @@
 import express from 'express';
-import http from 'http';
 import autoBind from 'auto-bind';
 
 import Endpoint from './endpoints/AbstractEndpoint';
@@ -7,37 +6,24 @@ import HttpClient from './http/HttpClient';
 
 import SocketServer from './socket/SocketServer';
 import UpdateEndpoint from './endpoints/Update';
+import HttpServer from './http/HttpServer';
 
 export const ENDPOINTS = {
     update: new UpdateEndpoint(),
 }
 
 export default class App {
-
-    private port:number;
-
     private express:express.Express;
-    private httpServer:http.Server;
+    private httpServer:HttpServer;
     private io:SocketServer;
 
     constructor(port:number=8000) {
         autoBind(this);
-        this.port = port;
 
         this.express = express();
-        this.httpServer = new http.Server(this.express);
-        this.io = new SocketServer(this.httpServer, ENDPOINTS);
+        this.httpServer = new HttpServer(port, ENDPOINTS, this.express);
+        this.io = this.httpServer.socketServer;
 
-        Object.keys(ENDPOINTS).forEach((endpoint) => {
-            this.express.get(`/${endpoint}`, (req:express.Request, res:express.Response) => {
-                const httpClient:HttpClient = new HttpClient(req, res, this.io);
-                const payload = Object.keys(req.query).length === 0 ? "" : JSON.stringify(req.query);
-                this.io.handleEndpoint(endpoint, payload, httpClient);
-            })
-        });
-    }
-
-    public start() {
-        this.httpServer.listen(this.port);
+        this.httpServer.start();
     }
 }
