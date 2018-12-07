@@ -39,12 +39,10 @@ describe('SocketServer', () => {
     });
 
     it('can accept a socket', () => {
-        const ioSocketStub = {};
-        const recievedSocket = socketServer.onConnectionRecieved(ioSocketStub);
+        const recievedSocket = socketServer.onConnectionRecieved(IO());
 
-        expect(Socket).toHaveBeenCalledWith(ioSocketStub, socketServer);
+        expect(Socket).toHaveBeenCalledWith(IO(), socketServer);
         expect(recievedSocket).toBeTruthy();
-
         expect(console.log).toHaveBeenCalled();
     });
 
