@@ -2,6 +2,9 @@ import Socket from '../Socket'
 import MockSocketServer from '../SocketServer';
 
 jest.mock('../SocketServer');
+jest.mock('uuid/v4', () => (
+    () => "test"
+));
 
 describe('Socket', () => {
 
@@ -20,13 +23,11 @@ describe('Socket', () => {
     })
 
     it('can be created', () => {
-        expect(mockIoSocket.on).toHaveBeenCalledTimes(2);        
-        expect(mockIoSocket.on).toHaveBeenCalledWith('update', socket.onUpdate)
-        expect(mockIoSocket.on).toHaveBeenCalledWith('disconnect', socket.onDisconnect)
-
         expect(socket).toBeTruthy();
         expect(socket.ioSocket).toBe(mockIoSocket);
-        expect(socket.id).toBeTruthy();
+        expect(socket.id).toEqual('test');
+
+        expect(mockIoSocket.on).toHaveBeenCalledWith('update', socket.onUpdate)
     });
 
     it('will notify the server on update', () => {
@@ -38,25 +39,14 @@ describe('Socket', () => {
         expect(socket.server.handleEndpoint).toHaveBeenCalledWith('update', payload, socket);
     });
 
-    it('will notify the server on disconnect', () => {
-        socket.server.onDisconnect = jest.fn();
-
-        socket.onDisconnect();
-
-        expect(socket.server.onDisconnect).toHaveBeenCalledWith(socket);
-    });
-
     it('can emit an error', () => {
         const endpoint:string = "update";
         const message:string = "Could not update";
-        const expectedPayload = {
-            endpoint,
-            message,
-        }
+        const expectedPayload = JSON.stringify({ endpoint, message })
 
         socket.emitError(endpoint, message);
 
-        expect(mockIoSocket.emit).toHaveBeenCalledWith('onerror', JSON.stringify(expectedPayload));
+        expect(mockIoSocket.emit).toHaveBeenCalledWith('onerror', expectedPayload);
     });
 
 });
