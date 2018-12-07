@@ -11,7 +11,6 @@ jest.mock('express', () => jest.fn().mockImplementation(() => {
 jest.mock("../socket/SocketServer");
 
 describe('App', () => {
-
     const testPort = 99;
 
     let app:any;
