@@ -3,7 +3,6 @@ import path from 'path'
 
 import { DATA_DIR_PATH, DATA_FILE_PATH } from '../../Constants'
 import MockSocket from '../../socket/Socket'
-import Endpoint from '../AbstractEndpoint';
 import UpdateEndpoint from '../Update';
 
 
