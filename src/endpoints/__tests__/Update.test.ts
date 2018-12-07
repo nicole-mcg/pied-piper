@@ -2,7 +2,6 @@ import fs from 'fs'
 import path from 'path'
 
 import { DATA_DIR_PATH, DATA_FILE_PATH } from '../../Constants'
-import MockClient from '../../Client'
 import UpdateEndpoint from '../Update';
 
 
@@ -20,14 +19,8 @@ jest.mock('fs', () => {
     }
 });
 
-jest.mock('../../Client', () => jest.fn().mockImplementation(() => {
-    return {
-        onError: jest.fn()
-    }
-}));
-
 describe('UpdateEndpoint', () => {
-    const mockClient = new (MockClient as any)(null);
+    const mockClient = { onError: jest.fn() };
     const mockServer = { 
         io: { emit: jest.fn() }
     }
