@@ -12,8 +12,9 @@ jest.mock('socket.io');
 jest.mock('../Socket');
 
 describe('SocketServer', () => {
-    const socket:any = {}
-    const endpoint:any = {}
+    const socket:any = {};
+    const endpoint:any = {};
+    const endpoints:any = { test: endpoint };
     const payload:string = "{}";
 
     let socketServer:any = null;
@@ -21,7 +22,7 @@ describe('SocketServer', () => {
 
     beforeEach(() => {
         mockHttpServer = new http.Server();
-        socketServer = new SocketServer(mockHttpServer, {});
+        socketServer = new SocketServer(mockHttpServer, endpoints);
 
         endpoint.handleEndpoint = jest.fn();
         socket.emitError = jest.fn();
@@ -33,7 +34,7 @@ describe('SocketServer', () => {
 
     it('can be created', () => {
         expect(socketServer).toBeTruthy();
-        expect(socketServer.endpoints).toEqual({});
+        expect(socketServer.endpoints).toEqual(endpoints);
         expect(socketServer.io).toBeTruthy();
         expect(IO().on).toBeCalledWith('connection', socketServer.onConnectionRecieved);
     });
@@ -47,19 +48,14 @@ describe('SocketServer', () => {
     });
 
     it('can accept a valid payload', () => {
-        const validPayload = "{}";
-        expect(socketServer.validatePayload(validPayload)).toBe(true);
+        expect(socketServer.validatePayload("{}")).toBe(true);
     });
 
     it('can deny an invalid payload', () => {
-        const invalidPayload = "invalid json";
-        expect(socketServer.validatePayload(invalidPayload)).toBe(false);
+        expect(socketServer.validatePayload("invalid json")).toBe(false);
     });
 
     it('can handle an endpoint', () => {
-        socketServer = new SocketServer(mockHttpServer, {
-            test: endpoint,
-        });
         socketServer.validatePayload = jest.fn().mockReturnValue(true);
         
         socketServer.handleEndpoint('test', payload, socket);
@@ -71,9 +67,6 @@ describe('SocketServer', () => {
     });
 
     it('wont handle an endpoint if invalid payload', () => {
-        socketServer = new SocketServer(mockHttpServer, {
-            test: endpoint,
-        });
         socketServer.validatePayload = jest.fn().mockReturnValue(false);
         
         socketServer.handleEndpoint('test', payload, socket);
