@@ -4,7 +4,6 @@ import autoBind from 'auto-bind';
 import SocketServer from './SocketServer';
 import Client from '../Client';
 
-
 export default class Socket extends Client {
     public readonly id:string;
     private ioSocket:any;
@@ -22,8 +21,6 @@ export default class Socket extends Client {
         })
     }
 
-   
-
     onError(endpoint:string, message:string) {
         const payload = {
             endpoint,
@@ -31,5 +28,4 @@ export default class Socket extends Client {
         }
         this.ioSocket.emit('onerror', JSON.stringify(payload));
     }
-
 }
