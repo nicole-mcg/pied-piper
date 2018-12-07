@@ -4,7 +4,7 @@ import express from 'express'
 import SocketServer from '../socket/SocketServer';
 import Client from '../Client';
 
-export default class Socket extends Client {
+export default class HttpClient extends Client {
     private req:express.Request;
     private res:express.Response;
 
