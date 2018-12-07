@@ -13,14 +13,14 @@ export default class UpdateEndpoint extends AbstractEndpoint {
     }
 
     handleEndpoint(payload:string, client:Client, server:SocketServer) {
-
         try {
             if (!fs.existsSync(DATA_DIR_PATH)){
                 fs.mkdirSync(DATA_DIR_PATH);
             }
 
             fs.writeFileSync(DATA_FILE_PATH, payload)
-            this.emitUpdate(payload, server);
+            server.io.emit('update', payload);
+            client.onSuccess('update', payload);
         } catch (error) {
             console.log(`Error saving file: ${error}`)                
             client.onError('update', "Error saving data");
@@ -28,6 +28,5 @@ export default class UpdateEndpoint extends AbstractEndpoint {
     }
 
     private emitUpdate(payload, server:SocketServer) {
-        server.io.emit('update', payload);
     }
 }
