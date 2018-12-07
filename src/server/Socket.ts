@@ -21,7 +21,7 @@ export default class Socket {
     }
 
     onUpdate(payload:string) {
-        this.server.onUpdate(payload, this);
+        this.server.handleEndpoint('update', payload, this);
     }
 
     onDisconnect() {

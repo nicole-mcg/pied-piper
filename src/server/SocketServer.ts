@@ -5,12 +5,15 @@ import autoBind from 'auto-bind';
 
 import { makeDirAndWriteToFile } from '../helpers/FileHelper'
 import Socket from './Socket'
+import Endpoint from '../Endpoint';
 
 export default class SocketServer {
     public io:any;
+    public endpoints:{ [s: string]: Endpoint };
 
-    constructor(httpServer:http.Server) {
+    constructor(httpServer:http.Server, endpoints:{ [s: string]: Endpoint }) {
         autoBind(this);
+        this.endpoints = endpoints;
         this.io = IO(httpServer);
 
         this.io.on('connection', this.onConnectionRecieved);
@@ -22,31 +25,27 @@ export default class SocketServer {
         return socket;
     }
 
-    onUpdate(payload:string, socket:Socket):Promise<any> {//TODO move to routed endpoint and cll that
+    handleEndpoint(endpointName:string, payload:string, socket:Socket) {
         if (!this.validatePayload(payload)) {
             socket.emitError("update", "Invalid request data");
-            return Promise.reject();
+            return;
         }
 
-        const dirPath = __dirname + "/../../data";
-        const filePath = __dirname + "/../../data/file.json";
+        const endpoint:Endpoint = this.endpoints[endpointName];
+        if (!endpoint) {
+            return;
+        }  
 
-        return makeDirAndWriteToFile(dirPath, filePath, payload)
-            .then(() => this.emitUpdate(payload))
-            .catch(() => this.onSaveError(socket));
+        endpoint.handleEndpoint(payload, socket, this);
     }
 
-    emitUpdate(payload) {
-        this.io.emit('update', payload);
-    }
+        
 
     onDisconnect(socket:Socket) {
 
     }
 
-    private onSaveError(socket) {
-        socket.emitError('update', "Error saving data");
-    }
+    
 
     private validatePayload(payload):boolean {
         try {

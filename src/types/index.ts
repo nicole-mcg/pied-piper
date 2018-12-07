@@ -8,9 +8,6 @@ import Socket_ from '../server/socket'
 declare global {
 
     type App = App_;
-
-    interface Route {}
-
     type SocketServer = SocketServer_;
     type Socket = Socket_;
 
@@ -19,8 +16,6 @@ declare global {
     type ExpressRequest = express.Request;
     type ExpressResponse = express.Response;
     type NextFunction = express.NextFunction;
-
-
     type HttpServer = http.Server;
 
 }

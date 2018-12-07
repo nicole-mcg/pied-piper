@@ -12,7 +12,7 @@ describe('Socket', () => {
     };
 
     beforeEach(() => {
-        socket = new Socket(mockIoSocket, new MockSocketServer(null));
+        socket = new Socket(mockIoSocket, new MockSocketServer(null, {}));
     })
 
     afterEach(() => {
@@ -31,11 +31,11 @@ describe('Socket', () => {
 
     it('will notify the server on update', () => {
         const payload = "{}";
-        socket.server.onUpdate = jest.fn();
+        socket.server.handleEndpoint = jest.fn();
 
         socket.onUpdate(payload);
 
-        expect(socket.server.onUpdate).toHaveBeenCalledWith(payload, socket);
+        expect(socket.server.handleEndpoint).toHaveBeenCalledWith('update', payload, socket);
     });
 
     it('will notify the server on disconnect', () => {

@@ -1,6 +1,7 @@
 const mock = jest.fn().mockImplementation(() => {
     return {
-        id: 'test'
+        id: 'test',
+        emitError: jest.fn(),
     };
 });
 

@@ -1,37 +1,36 @@
 
 import App from '../App'
+import SocketServer from '../server/SocketServer';
 
 jest.mock('express', () => {
     return require('jest-express');
 });
 jest.mock('http');
-jest.mock('socket.io', () => (
-    (httpServer) => ({})
-));
-
 
 jest.mock("../server/SocketServer");
 
 describe('App', () => {
 
-    it('can be created', () => {
-        const port = 99;
-        const app:any = new App(port);
+    const testPort = 99;
 
+    let app:any;
+
+    beforeEach(() => {
+        app = new App(testPort);
+    })
+
+    it('can be created', () => {
         expect(app).toBeTruthy()
-        expect(app.port).toBe(port);
+        expect(app.port).toBe(testPort);
         expect(app.httpServer).toBeTruthy();
-        expect(app).toBeTruthy()
+        expect(app.io).toBeTruthy();
+        expect(SocketServer as any).toHaveBeenCalled();
     });
 
     it('can be started', () => {
-        const port = 1;
-        const app = new App(port);
         app.httpServer.listen = jest.fn();
-
         app.start();
-
-        expect(app.httpServer.listen).toHaveBeenCalledWith(port);
+        expect(app.httpServer.listen).toHaveBeenCalledWith(testPort);
     });
 
 });

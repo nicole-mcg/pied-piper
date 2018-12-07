@@ -26,7 +26,7 @@ class MockFs {
 
 }
 
-var mockFs = new MockFs();//var so variable is hoisted
+var mockFs = new MockFs();
 jest.mock('fs', mockFs);
 
 describe('FileHelper', () => {
