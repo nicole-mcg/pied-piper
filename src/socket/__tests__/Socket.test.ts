@@ -26,8 +26,8 @@ describe('Socket', () => {
 
     it('can be created', () => {
         expect(socket).toBeInstanceOf(Client);
-        expect(socket.ioSocket).toBe(mockIo());
-        expect(socket.id).toEqual(mockUuidv4());
+        expect(socket).toHaveProperty('ioSocket', mockIo());
+        expect(socket).toHaveProperty('id', mockUuidv4());
 
         expect(mockIo().on).toHaveBeenCalledWith('test', expect.any(Function));
     });
