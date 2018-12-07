@@ -12,7 +12,7 @@ jest.mock('socket.io');
 jest.mock('../Socket');
 
 describe('SocketServer', () => {
-    const mockSocket = { onError: jest.fn() };
+    const mockClient = { onError: jest.fn() };
     const mockEndpoint:any = { handleEndpoint: jest.fn() };
     const mockEndpoints:any = { test: mockEndpoint };
     const mockPayload:string = "{}";
@@ -51,10 +51,10 @@ describe('SocketServer', () => {
     it('can handle an endpoint', () => {
         socketServer.validatePayload = jest.fn().mockReturnValue(true);
         
-        socketServer.handleEndpoint('test', mockPayload, mockSocket);
+        socketServer.handleEndpoint('test', mockPayload, mockClient);
 
         expect(mockEndpoint.handleEndpoint)
-            .toHaveBeenCalledWith(mockPayload, mockSocket, socketServer);
+            .toHaveBeenCalledWith(mockPayload, mockClient, socketServer);
         expect(socketServer.validatePayload)
             .toHaveBeenCalledWith(mockPayload);
     });
@@ -62,11 +62,11 @@ describe('SocketServer', () => {
     it('wont handle an endpoint if invalid payload', () => {
         socketServer.validatePayload = jest.fn().mockReturnValue(false);
         
-        socketServer.handleEndpoint('test', mockPayload, mockSocket);
+        socketServer.handleEndpoint('test', mockPayload, mockClient);
 
         expect(mockEndpoint.handleEndpoint).not.toHaveBeenCalled();
         expect(socketServer.validatePayload).toHaveBeenCalledWith(mockPayload);
-        expect(mockSocket.onError).toHaveBeenCalled();
+        expect(mockClient.onError).toHaveBeenCalled();
     });
 
 });
