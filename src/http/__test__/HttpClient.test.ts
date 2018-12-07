@@ -1,5 +1,5 @@
-import Client from '../Client';
-import HttpClient from './HttpClient';
+import Client from '../../Client';
+import HttpClient from '../HttpClient';
 
 describe('HttpClient', () => {
     const req:any = {};
