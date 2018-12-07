@@ -17,6 +17,14 @@ describe('HttpClient', () => {
         expect(httpClient).toHaveProperty('req', req);
         expect(httpClient).toHaveProperty('req', req);
         expect(httpClient).toHaveProperty('server', server);
+    });
+
+    it('can send report success back to the client', () => {
+        const payload = 'test';
+        
+        httpClient.onSuccess('', payload);
+
+        expect(res.send).toHaveBeenCalledWith(payload);
     })
 
     it('can send an error back to the client', () => {
@@ -26,6 +34,5 @@ describe('HttpClient', () => {
         httpClient.onError('', errorMessage);
 
         expect(res.send).toHaveBeenCalledWith(expectedPayload);
-    })
-
+    });
 })

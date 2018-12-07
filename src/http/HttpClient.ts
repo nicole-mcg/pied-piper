@@ -16,6 +16,10 @@ export default class Socket extends Client {
         this.res = res;
     }
 
+    onSuccess(endpoint:string, payload:string) {
+        this.res.send(payload);
+    }
+
     onError(endpoint:string, message:string) {
         const payload = { error: message };
         this.res.send(JSON.stringify(payload));
