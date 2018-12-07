@@ -9,6 +9,7 @@ export default abstract class Client {
         this.server = server;
     }
 
+    abstract onSuccess(endpoint:string, message:string);
     abstract onError(endpoint:string, message:string);
 
     handleRequest(endpoint:string, payload:string) {
