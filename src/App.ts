@@ -10,7 +10,7 @@ import UpdateEndpoint from './endpoints/Update';
 export default class App {
 
     private port:number;
-
+    
     private express:Express;
     private httpServer:HttpServer;
     private io:SocketServer;

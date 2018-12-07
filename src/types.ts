@@ -1,9 +1,9 @@
 import express from 'express';
 import http from 'http';
 
-import App_ from '../App'
-import SocketServer_ from '../server/SocketServer'
-import Socket_ from '../server/socket'
+import App_ from './App'
+import SocketServer_ from './server/SocketServer'
+import Socket_ from './server/socket'
 
 declare global {
 
