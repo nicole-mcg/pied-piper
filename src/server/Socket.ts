@@ -16,16 +16,11 @@ export default class Socket {
 
         this.id = uuidv4();
         
-        ioSocket.on('disconnect', this.onDisconnect);
         ioSocket.on('update', this.onUpdate);
     }
 
     onUpdate(payload:string) {
         this.server.handleEndpoint('update', payload, this);
-    }
-
-    onDisconnect() {
-        this.server.onDisconnect(this);
     }
 
     emitError(endpoint:string, message:string) {
