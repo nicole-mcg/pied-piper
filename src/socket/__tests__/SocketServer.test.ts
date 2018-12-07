@@ -12,8 +12,6 @@ jest.mock('socket.io');
 jest.mock('../Socket');
 
 describe('SocketServer', () => {
-    const ioStub = IO();
-
     const socket:any = {}
     const endpoint:any = {}
     const payload:string = "{}";
@@ -37,7 +35,7 @@ describe('SocketServer', () => {
         expect(socketServer).toBeTruthy();
         expect(socketServer.endpoints).toEqual({});
         expect(socketServer.io).toBeTruthy();
-        expect(ioStub.on).toBeCalledWith('connection', socketServer.onConnectionRecieved);
+        expect(IO().on).toBeCalledWith('connection', socketServer.onConnectionRecieved);
     });
 
     it('can accept a socket', () => {
