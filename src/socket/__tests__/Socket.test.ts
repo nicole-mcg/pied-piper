@@ -12,11 +12,15 @@ jest.mock('uuid/v4', () => (
 jest.mock('../SocketServer');
 
 describe('Socket', () => {
+    const mockEndpoint = jest.fn();
+    const mockServer:any = new MockSocketServer(null);
+    mockServer.endpoints = { test: mockEndpoint };
+    mockServer.handleEndpoint = jest.fn();
 
     let socket:any = null;
 
     beforeEach(() => {
-        socket = new Socket(mockIo(), new MockSocketServer(null, {}));
+        socket = new Socket(mockIo(), mockServer);
     })
 
     it('can be created', () => {
@@ -24,16 +28,17 @@ describe('Socket', () => {
         expect(socket.ioSocket).toBe(mockIo());
         expect(socket.id).toEqual(mockUuidv4());
 
-        expect(mockIo().on).toHaveBeenCalledWith('update', socket.onUpdate)
+        expect(mockIo().on).toHaveBeenCalledWith('test', expect.any(Function));
     });
 
     it('will notify the server on update', () => {
+        const endpoint = 'update';
         const payload = "{}";
         socket.server.handleEndpoint = jest.fn();
 
-        socket.onUpdate(payload);
+        socket.handleRequest(endpoint, payload);
 
-        expect(socket.server.handleEndpoint).toHaveBeenCalledWith('update', payload, socket);
+        expect(socket.server.handleEndpoint).toHaveBeenCalledWith(endpoint, payload, socket);
     });
 
     it('can emit an error', () => {

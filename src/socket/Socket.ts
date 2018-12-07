@@ -16,11 +16,13 @@ export default class Socket {
 
         this.id = uuidv4();
         
-        ioSocket.on('update', this.onUpdate);
+        Object.keys(server.endpoints).forEach((endpoint) => {
+            ioSocket.on(endpoint, (payload) => this.handleRequest(endpoint, payload));
+        })
     }
 
-    onUpdate(payload:string) {
-        this.server.handleEndpoint('update', payload, this);
+    handleRequest(endpoint:string, payload:string) {
+        this.server.handleEndpoint(endpoint, payload, this);
     }
 
     emitError(endpoint:string, message:string) {
