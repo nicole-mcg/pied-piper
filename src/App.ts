@@ -2,7 +2,7 @@ import express from 'express';
 import http from 'http';
 import autoBind from 'auto-bind';
 
-import SocketServer from './server/SocketServer';
+import SocketServer from './socket/SocketServer';
 import UpdateEndpoint from './endpoints/Update';
 
 export default class App {

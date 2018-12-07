@@ -1,13 +1,13 @@
 
 import App from '../App'
-import SocketServer from '../server/SocketServer';
+import SocketServer from '../socket/SocketServer';
 
 jest.mock('express', () => {
     return require('jest-express');
 });
 jest.mock('http');
 
-jest.mock("../server/SocketServer");
+jest.mock("../socket/SocketServer");
 
 describe('App', () => {
 

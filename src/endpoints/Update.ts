@@ -1,7 +1,7 @@
 const path = require('path');
 
-import Socket from '../server/Socket';
-import SocketServer from '../server/SocketServer';
+import Socket from '../socket/Socket';
+import SocketServer from '../socket/SocketServer';
 
 import AbstractEndpoint from './AbstractEndpoint'
 

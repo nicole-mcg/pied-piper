@@ -1,12 +1,12 @@
 const path = require('path');
-import MockSocket from '../../server/Socket'
+import MockSocket from '../../socket/Socket'
 import UpdateEndpoint from '../Update';
 import { makeDirAndWriteToFile } from '../../helpers/FileHelper';
 
 jest.mock('../../helpers/FileHelper', () => ({
     makeDirAndWriteToFile: jest.fn().mockReturnValue(Promise.resolve())
 }));
-jest.mock('../../server/Socket');
+jest.mock('../../socket/Socket');
 
 describe('UpdateEndpoint', () => {
 
