@@ -28,10 +28,6 @@ describe('SocketServer', () => {
         socket.emitError = jest.fn();
     });
 
-    afterEach(() => {
-        jest.restoreAllMocks();
-    })
-
     it('can be created', () => {
         expect(socketServer).toBeTruthy();
         expect(socketServer.endpoints).toEqual(endpoints);

@@ -35,10 +35,6 @@ describe('UpdateEndpoint', () => {
         updateEndpoint = new UpdateEndpoint();
     });
 
-    afterEach(() => {
-        jest.restoreAllMocks();
-    })
-
     it('can recieve an update from a socket', () => {
         (fs as any).shouldFail(false);
         const payload = "{}";

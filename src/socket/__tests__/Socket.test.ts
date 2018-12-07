@@ -19,10 +19,6 @@ describe('Socket', () => {
         socket = new Socket(mockIo(), new MockSocketServer(null, {}));
     })
 
-    afterEach(() => {
-        jest.restoreAllMocks();
-    })
-
     it('can be created', () => {
         expect(socket).toBeTruthy();
         expect(socket.ioSocket).toBe(mockIo());
