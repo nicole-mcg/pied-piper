@@ -59,8 +59,6 @@ describe('UpdateEndpoint', () => {
     });
 
     it('will emit error to socket on update failure', (done) => {
-        const oldLog = console.log;
-        console.log = jest.fn();
 
         (fs as any).shouldFail();
         try {
@@ -68,7 +66,6 @@ describe('UpdateEndpoint', () => {
             expect(fs.existsSync).toHaveBeenCalledWith(dirPath);
             expect(mockSocket.emitError).toHaveBeenCalled();
             expect(console.log).toHaveBeenCalled();
-            console.log = oldLog;
             done();
         } catch (e) {
             done.fail(e)

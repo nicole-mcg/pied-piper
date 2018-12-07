@@ -1,23 +1,19 @@
 
 import http from 'http'
-
-import SocketServer from '../SocketServer'
+import IO from 'socket.io';
 
 import Socket from './../Socket';
+import SocketServer from '../SocketServer'
 
 jest.mock('express');
 jest.mock('http');
+jest.mock('socket.io');
+
 jest.mock('../Socket');
 
-var ioStub = { // var so variable is hoisted
-    on: jest.fn(),
-    emit: jest.fn()
-}
-jest.mock('socket.io', () => (
-    (httpServer) => ioStub
-));
-
 describe('SocketServer', () => {
+    const ioStub = IO();
+
     const socket:any = {}
     const endpoint:any = {}
     const payload:string = "{}";
@@ -45,17 +41,13 @@ describe('SocketServer', () => {
     });
 
     it('can accept a socket', () => {
-        const oldLog = console.log;
-        console.log = jest.fn();
-
         const ioSocketStub = {};
         const recievedSocket = socketServer.onConnectionRecieved(ioSocketStub);
 
-        expect(Socket).toHaveBeenCalled();
+        expect(Socket).toHaveBeenCalledWith(ioSocketStub, socketServer);
         expect(recievedSocket).toBeTruthy();
 
         expect(console.log).toHaveBeenCalled();
-        console.log = oldLog;
     });
 
     it('can accept a valid payload', () => {
