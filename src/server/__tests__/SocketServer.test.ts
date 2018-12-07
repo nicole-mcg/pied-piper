@@ -18,7 +18,7 @@ jest.mock('socket.io', () => (
 describe('SocketServer', () => {
 
     let socketServer:any = null;
-    let mockHttpServer:HttpServer;
+    let mockHttpServer:any;
 
     beforeEach(() => {
         mockHttpServer = new http.Server();
