@@ -47,6 +47,7 @@ describe('UpdateEndpoint', () => {
     const mockServer = { 
         io: { emit: jest.fn() }
     }
+    const payload = "{}";
 
     let updateEndpoint:any;
 
@@ -60,7 +61,6 @@ describe('UpdateEndpoint', () => {
 
     describe('put', () => {
         it('can update the file', () => {
-            const payload = "{}";
     
             updateEndpoint.put(payload, mockClient, mockServer)
     
@@ -72,10 +72,14 @@ describe('UpdateEndpoint', () => {
     
         it('will make the directory if it doesnt exist', () => {
             (fs as any).fileExists(false);
-    
-            updateEndpoint.put(null, mockClient, mockServer)
-    
+            updateEndpoint.put(payload, mockClient, mockServer)
             expect(fs.mkdirSync).toHaveBeenCalledWith(DATA_DIR_PATH);
+        });
+
+        it('wont update if payload is falsy', () => {
+            (fs as any).fileExists(false);
+            updateEndpoint.put("", mockClient, mockServer)
+            expect(fs.mkdirSync).not.toHaveBeenCalled();
         });
     
         it('will emit error to socket on failure', (done) => {

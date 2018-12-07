@@ -45,6 +45,10 @@ export default class UpdateEndpoint extends Endpoint {
     
     put(payload:string, client:Client, server:SocketServer) {
         try {
+            if (!payload) {
+                return;
+            }
+
             if (!fs.existsSync(DATA_DIR_PATH)){
                 fs.mkdirSync(DATA_DIR_PATH);
             }
