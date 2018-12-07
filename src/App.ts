@@ -31,7 +31,8 @@ export default class App {
         Object.keys(ENDPOINTS).forEach((endpoint) => {
             this.express.get(`/${endpoint}`, (req:express.Request, res:express.Response) => {
                 const httpClient:HttpClient = new HttpClient(req, res, this.io);
-                this.io.handleEndpoint(endpoint, JSON.stringify(req.params), httpClient);
+                const payload = Object.keys(req.query).length === 0 ? "" : JSON.stringify(req.query);
+                this.io.handleEndpoint(endpoint, payload, httpClient);
             })
         });
     }

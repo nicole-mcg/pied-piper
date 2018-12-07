@@ -18,7 +18,7 @@ export default class Socket extends Client {
         this.id = uuidv4();
         
         Object.keys(server.endpoints).forEach((endpoint) => {
-            ioSocket.on(endpoint, (payload) => this.handleRequest(endpoint, payload));
+            ioSocket.on(endpoint, (payload) => this.onRequest(endpoint, payload));
         })
     }
 

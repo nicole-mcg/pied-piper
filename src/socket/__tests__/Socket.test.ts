@@ -37,7 +37,7 @@ describe('Socket', () => {
         const payload = "{}";
         socket.server.handleEndpoint = jest.fn();
 
-        socket.handleRequest(endpoint, payload);
+        socket.onRequest(endpoint, payload);
 
         expect(socket.server.handleEndpoint).toHaveBeenCalledWith(endpoint, payload, socket);
     });
