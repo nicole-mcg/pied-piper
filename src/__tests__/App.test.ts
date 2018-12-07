@@ -1,8 +1,9 @@
 import mockExpress from 'express';
 
-import App, { ENDPOINTS } from '../App'
+import App from '../App'
 import MockHttpServer from '../http/HttpServer';
 import MockSocketServer from '../socket/SocketServer';
+import { ENDPOINTS } from '../Constants';
 
 const mockHttpServer = {
     socketServer: new MockSocketServer(null),

@@ -1,16 +1,9 @@
 import express from 'express';
 import autoBind from 'auto-bind';
 
-import Endpoint from './endpoints/AbstractEndpoint';
-import HttpClient from './http/HttpClient';
-
 import SocketServer from './socket/SocketServer';
-import UpdateEndpoint from './endpoints/Update';
 import HttpServer from './http/HttpServer';
-
-export const ENDPOINTS = {
-    update: new UpdateEndpoint(),
-}
+import { ENDPOINTS } from './Constants';
 
 export default class App {
     private express:express.Express;
