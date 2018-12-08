@@ -1,7 +1,7 @@
 module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
-  setupTestFrameworkScriptFile: "<rootDir>/jest/setup.ts",
+  setupTestFrameworkScriptFile: "<rootDir>/tests/_setup.ts",
   moduleNameMapper: {
     "@http\\/(.*)": "<rootDir>/src/http/$1",
     "@socket\\/(.*)": "<rootDir>/src/socket//$1",
