@@ -10,9 +10,9 @@ A small program to update a text file and listen for updates via `socket.io`
 
 Run server: `npm start [port]`
 
-Tests: `npm test`
+Run tests: `npm test`
 
-Linter: `npm run-script lint`
+Run inter: `npm run-script lint`
 
 ## Endpoints
 
