@@ -54,7 +54,7 @@ export default class UpdateEndpoint extends Endpoint {
             }
 
             fs.writeFileSync(DATA_FILE_PATH, payload);
-            server.io.emit('update', payload); // Emit to all connected
+            server.io.emit('contents', payload); // Emit to all connected
             request.onSuccess(payload);
         } catch (error) {
             console.log(`Error saving file: ${error}`);

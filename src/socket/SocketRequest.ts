@@ -7,6 +7,7 @@ import Request from '@app/Request';
 export default class SocketRequest extends Request {
     public readonly id: string;
     private ioSocket: any;
+    private acknowledge: any;
 
     constructor(app: App, ioSocket: any) {
         super(app);
@@ -18,17 +19,19 @@ export default class SocketRequest extends Request {
 
         Object.keys(app.endpoints).forEach((endpoint) => {
             ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'].forEach((method) => {
-                ioSocket.on(`${endpoint}/${method.toLowerCase()}`, (payload) => this.onRequest(endpoint, payload, method));
+                ioSocket.on(`${endpoint}/${method.toLowerCase()}`, (payload, acknowledge) => {
+                    this.acknowledge = acknowledge;
+                    this.onRequest(endpoint, payload, method);
+                });
             });
         });
     }
 
     public onSuccess(payload: string) {
-        // TODO confirm success with socket.io
+        this.acknowledge(payload, false);
     }
 
     public onError(message: string) {
-        // TODO confirm error with socket.io (don't emit)
-        this.ioSocket.emit('onerror', message);
+        this.acknowledge(null, message);
     }
 }
