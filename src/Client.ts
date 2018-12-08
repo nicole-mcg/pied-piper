@@ -13,6 +13,6 @@ export default abstract class Client {
     public abstract onError(message: string);
 
     public onRequest(endpoint: string, payload: string, method: string) {
-        this.app.handleEndpoint(endpoint, payload, this as unknown as Socket, method);
+        this.app.onRequest(endpoint, payload, this as unknown as Socket, method);
     }
 }

@@ -63,7 +63,7 @@ describe('App', () => {
             it(`can handle an endpoint with method: ${method}`, () => {
                 app.validatePayload = jest.fn().mockReturnValue(true);
 
-                app.handleEndpoint('test', mockPayload, mockClient, method);
+                app.onRequest('test', mockPayload, mockClient, method);
 
                 expect(mockEndpoint[method])
                     .toHaveBeenCalledWith(mockPayload, mockClient, app.io);
@@ -75,7 +75,7 @@ describe('App', () => {
         it('wont handle an endpoint if invalid payload', () => {
             app.validatePayload = jest.fn().mockReturnValue(false);
 
-            app.handleEndpoint('test', mockPayload, mockClient);
+            app.onRequest('test', mockPayload, mockClient);
 
             METHODS.forEach((method) => {
                 expect(mockEndpoint[method.toLowerCase()]).not.toHaveBeenCalled();

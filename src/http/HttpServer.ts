@@ -41,7 +41,7 @@ export default class HttpServer {
         return (req: express.Request, res: express.Response) => {
             const httpClient: HttpClient = new HttpClient(this.app, req, res);
             const payload = Object.keys(req.query).length === 0 ? "" : JSON.stringify(req.query);
-            this.app.handleEndpoint(endpoint, payload, httpClient, method);
+            this.app.onRequest(endpoint, payload, httpClient, method);
         };
     }
 }

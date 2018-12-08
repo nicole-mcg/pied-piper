@@ -23,7 +23,7 @@ export default class App {
         this.httpServer.start();
     }
 
-    public handleEndpoint(endpointName: string, payload: string, client: Client, method: string) {
+    public onRequest(endpointName: string, payload: string, client: Client, method: string) {
         if (!this.validatePayload(payload)) {
             client.onError("Invalid request data");
             return;

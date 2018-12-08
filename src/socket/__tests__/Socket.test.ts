@@ -39,11 +39,10 @@ describe('Socket', () => {
         const endpoint = 'update';
         const payload = "{}";
         const method = "null";
-        socket.app.handleEndpoint = jest.fn();
 
         socket.onRequest(`${endpoint}`, payload, method);
 
-        expect(socket.app.handleEndpoint).toHaveBeenCalledWith(endpoint, payload, socket, method);
+        expect(socket.app.onRequest).toHaveBeenCalledWith(endpoint, payload, socket, method);
     });
 
     it('can emit an error', () => {
