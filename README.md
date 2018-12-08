@@ -12,7 +12,7 @@ Run server: `npm start [port]`
 
 Run tests: `npm test`
 
-Run inter: `npm run lint`
+Run linter: `npm run lint`
 
 HTTP usage:
 ```
