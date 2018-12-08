@@ -12,7 +12,7 @@ Run server: `npm start [port]`
 
 Run tests: `npm test`
 
-Run inter: `npm run-script lint`
+Run inter: `npm run lint`
 
 ## Endpoints
 
