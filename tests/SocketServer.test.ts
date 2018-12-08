@@ -13,7 +13,6 @@ jest.mock("@socket/SocketRequest", () => jest.fn().mockImplementation(() => {
     return {};
 }));
 
-
 describe('SocketServer', () => {
     const mockEndpoint: any = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'].reduce((handlers, method) => {
         handlers[method.toLowerCase()] = jest.fn();
