@@ -4,7 +4,7 @@ import mockUuidv4 from 'uuid/v4';
 import App from '../../App';
 import { METHODS } from '../../Constants';
 import Request from '../../Request';
-import Socket from '../Socket';
+import SocketRequest from '../SocketRequest';
 
 jest.mock('socket.io');
 jest.mock('uuid/v4', () => (
@@ -22,7 +22,7 @@ describe('Socket', () => {
     let socket: any = null;
 
     beforeEach(() => {
-        socket = new Socket(mockApp, mockIo());
+        socket = new SocketRequest(mockApp, mockIo());
     });
 
     it('can be created', () => {

@@ -3,14 +3,14 @@ import http from 'http';
 import mockIo from 'socket.io';
 
 import { METHODS } from '../../Constants';
+import MockSocketRequest from '../SocketRequest';
 import SocketServer from '../SocketServer';
-import MockSocket from './../Socket';
 
 jest.mock('express');
 jest.mock('http');
 jest.mock('socket.io');
 
-jest.mock('../Socket');
+jest.mock('../SocketRequest');
 
 describe('SocketServer', () => {
     const mockApp: any = {};
@@ -39,7 +39,7 @@ describe('SocketServer', () => {
     it('can accept a socket', () => {
         const recievedSocket = socketServer.onConnectionRecieved(mockIo());
 
-        expect(MockSocket).toHaveBeenCalledWith(mockApp, mockIo());
+        expect(MockSocketRequest).toHaveBeenCalledWith(mockApp, mockIo());
         expect(recievedSocket).toBeTruthy();
         expect(console.log).toHaveBeenCalled();
     });

@@ -1,11 +1,11 @@
 import autoBind from 'auto-bind';
 import uuidv4 from 'uuid/v4';
 
+import App from '../App';
 import { METHODS } from '../Constants';
 import Request from '../Request';
-import App from './../App';
 
-export default class Socket extends Request {
+export default class SocketRequest extends Request {
     public readonly id: string;
     private ioSocket: any;
 

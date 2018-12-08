@@ -1,6 +1,6 @@
 
 import App from './App';
-import Socket from './socket/Socket';
+import SocketRequest from './socket/SocketRequest';
 
 export default abstract class Client {
     protected app: App;
@@ -13,6 +13,6 @@ export default abstract class Client {
     public abstract onError(message: string);
 
     public onRequest(endpoint: string, payload: string, method: string) {
-        this.app.onRequest(endpoint, payload, this as unknown as Socket, method);
+        this.app.onRequest(endpoint, payload, this as unknown as SocketRequest, method);
     }
 }
