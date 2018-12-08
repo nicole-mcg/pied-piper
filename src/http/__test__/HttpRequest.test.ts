@@ -19,7 +19,7 @@ describe('HttpRequest', () => {
         expect(httpRequest).toHaveProperty('app', app);
     });
 
-    it('can send report success back to the client', () => {
+    it('can send report success back to the request', () => {
         const payload = 'test';
 
         httpRequest.onSuccess(payload);
@@ -27,7 +27,7 @@ describe('HttpRequest', () => {
         expect(res.send).toHaveBeenCalledWith(payload);
     });
 
-    it('can send an error back to the client', () => {
+    it('can send an error back to the request', () => {
         const errorMessage = 'test';
         const expectedPayload = JSON.stringify({ error: errorMessage });
 

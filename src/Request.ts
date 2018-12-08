@@ -2,7 +2,7 @@
 import App from './App';
 import SocketRequest from './socket/SocketRequest';
 
-export default abstract class Client {
+export default abstract class Request {
     protected app: App;
 
     constructor(app) {

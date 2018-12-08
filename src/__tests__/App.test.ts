@@ -55,7 +55,7 @@ describe('App', () => {
     });
 
     describe('onRequest', () => {
-        const mockClient = { onError: jest.fn() };
+        const mockRequest = { onError: jest.fn() };
         const mockPayload = "{}";
 
         METHODS.forEach((method) => {
@@ -63,10 +63,10 @@ describe('App', () => {
             it(`can handle an endpoint with method: ${method}`, () => {
                 app.validatePayload = jest.fn().mockReturnValue(true);
 
-                app.onRequest('test', mockPayload, mockClient, method);
+                app.onRequest('test', mockPayload, mockRequest, method);
 
                 expect(mockEndpoint[method])
-                    .toHaveBeenCalledWith(mockPayload, mockClient, app.io);
+                    .toHaveBeenCalledWith(mockPayload, mockRequest, app.io);
                 expect(app.validatePayload)
                     .toHaveBeenCalledWith(mockPayload);
             });
@@ -75,13 +75,13 @@ describe('App', () => {
         it('wont handle an endpoint if invalid payload', () => {
             app.validatePayload = jest.fn().mockReturnValue(false);
 
-            app.onRequest('test', mockPayload, mockClient);
+            app.onRequest('test', mockPayload, mockRequest);
 
             METHODS.forEach((method) => {
                 expect(mockEndpoint[method.toLowerCase()]).not.toHaveBeenCalled();
             });
             expect(app.validatePayload).toHaveBeenCalledWith(mockPayload);
-            expect(mockClient.onError).toHaveBeenCalled();
+            expect(mockRequest.onError).toHaveBeenCalled();
         });
     });
 });

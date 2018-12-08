@@ -14,7 +14,6 @@ jest.mock('../SocketRequest');
 
 describe('SocketServer', () => {
     const mockApp: any = {};
-    const mockClient = { onError: jest.fn() };
     const mockEndpoint: any = METHODS.reduce((handlers, method) => {
         handlers[method.toLowerCase()] = jest.fn();
         return handlers;
