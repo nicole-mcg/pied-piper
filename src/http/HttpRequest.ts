@@ -4,7 +4,7 @@ import express from 'express';
 import App from '../App';
 import Request from '../Request';
 
-export default class HttpClient extends Request {
+export default class HttpRequest extends Request {
     private req: express.Request;
     private res: express.Response;
 

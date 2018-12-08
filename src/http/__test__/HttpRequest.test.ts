@@ -1,28 +1,28 @@
 import Request from '../../Request';
-import HttpClient from '../HttpClient';
+import HttpRequest from '../HttpRequest';
 
-describe('HttpClient', () => {
+describe('HttpRequest', () => {
     const req: any = {};
     const res: any = { send: jest.fn() };
     const app: any = {};
 
-    let httpClient;
+    let httpRequest;
 
     beforeEach(() => {
-        httpClient = new HttpClient(app, req, res);
+        httpRequest = new HttpRequest(app, req, res);
     });
 
     it('can be created', () => {
-        expect(httpClient).toBeInstanceOf(Request);
-        expect(httpClient).toHaveProperty('req', req);
-        expect(httpClient).toHaveProperty('req', req);
-        expect(httpClient).toHaveProperty('app', app);
+        expect(httpRequest).toBeInstanceOf(Request);
+        expect(httpRequest).toHaveProperty('req', req);
+        expect(httpRequest).toHaveProperty('req', req);
+        expect(httpRequest).toHaveProperty('app', app);
     });
 
     it('can send report success back to the client', () => {
         const payload = 'test';
 
-        httpClient.onSuccess(payload);
+        httpRequest.onSuccess(payload);
 
         expect(res.send).toHaveBeenCalledWith(payload);
     });
@@ -31,7 +31,7 @@ describe('HttpClient', () => {
         const errorMessage = 'test';
         const expectedPayload = JSON.stringify({ error: errorMessage });
 
-        httpClient.onError(errorMessage);
+        httpRequest.onError(errorMessage);
 
         expect(res.send).toHaveBeenCalledWith(expectedPayload);
     });

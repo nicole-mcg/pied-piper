@@ -13,7 +13,7 @@ jest.mock('uuid/v4', () => (
 
 jest.mock('../../App');
 
-describe('Socket', () => {
+describe('SocketRequest', () => {
     const mockEndpoint = { put: jest.fn() };
     const mockApp: any = new App();
     mockApp.endpoints = { test: mockEndpoint };
