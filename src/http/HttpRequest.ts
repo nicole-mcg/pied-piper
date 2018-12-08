@@ -5,6 +5,7 @@ import App from '@app/App';
 import Request from '@app/Request';
 
 export default class HttpRequest extends Request {
+    public readonly payload: string;
     private req: express.Request;
     private res: express.Response;
 
@@ -14,6 +15,8 @@ export default class HttpRequest extends Request {
 
         this.req = req;
         this.res = res;
+
+        this.payload = Object.keys(req.query).length === 0 ? "" : JSON.stringify(req.query);
     }
 
     public onSuccess(payload: string) {

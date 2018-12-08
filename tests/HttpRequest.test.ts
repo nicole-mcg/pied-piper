@@ -2,7 +2,10 @@ import Request from '@app/Request';
 import HttpRequest from '@http/HttpRequest';
 
 describe('HttpRequest', () => {
-    const req: any = {};
+    const mockQuery = { test: 1 };
+    const req: any = {
+        query: mockQuery,
+    };
     const res: any = { send: jest.fn() };
     const app: any = {};
 
@@ -14,9 +17,10 @@ describe('HttpRequest', () => {
 
     it('can be created', () => {
         expect(httpRequest).toBeInstanceOf(Request);
-        expect(httpRequest).toHaveProperty('req', req);
-        expect(httpRequest).toHaveProperty('req', req);
         expect(httpRequest).toHaveProperty('app', app);
+        expect(httpRequest).toHaveProperty('req', req);
+        expect(httpRequest).toHaveProperty('req', req);
+        expect(httpRequest).toHaveProperty('payload', JSON.stringify(mockQuery));
     });
 
     it('can send report success back to the request', () => {

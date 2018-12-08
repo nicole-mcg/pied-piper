@@ -41,8 +41,7 @@ export default class HttpServer {
     private createRouteHandler(endpoint, method) {
         return (req: express.Request, res: express.Response) => {
             const httpRequest: HttpRequest = new HttpRequest(this.app, req, res);
-            const payload = Object.keys(req.query).length === 0 ? "" : JSON.stringify(req.query);
-            this.app.onRequest(endpoint, payload, httpRequest, method);
+            httpRequest.onRequest(endpoint, httpRequest.payload, method);
         };
     }
 }
