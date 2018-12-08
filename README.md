@@ -9,7 +9,9 @@ A small program to update a text file and listen for updates via `socket.io`
 ## Usage
 
 Run server: `npm start [port]`
+
 Tests: `npm test`
+
 Linter: `npm run-script lint`
 
 ## Endpoints
