@@ -1,7 +1,6 @@
 {
     "extends": "tslint:latest",
     "rules": {
-      "no-unused-variable": true,
       "no-unused-expression": [true,
           "allow-new"
       ],

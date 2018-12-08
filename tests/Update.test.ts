@@ -1,5 +1,4 @@
 import fs from 'fs';
-import path from 'path';
 
 import { DATA_DIR_PATH, DATA_FILE_PATH } from '@app/Constants';
 import UpdateEndpoint from '@endpoints/Update';
@@ -26,10 +25,10 @@ jest.mock('fs', () => {
             isFileValid = true;
             error = null;
         },
-        existsSync: jest.fn().mockImplementation((path) => doesFileExist),
-        readFileSync: jest.fn().mockImplementation((path) => isFileValid ? '{"test": 1}' : "err"),
+        existsSync: jest.fn().mockImplementation(() => doesFileExist),
+        readFileSync: jest.fn().mockImplementation(() => isFileValid ? '{"test": 1}' : "err"),
         mkdirSync: jest.fn(),
-        writeFileSync: jest.fn().mockImplementation((path) => {
+        writeFileSync: jest.fn().mockImplementation(() => {
             if (error) {
                 throw new Error();
             }

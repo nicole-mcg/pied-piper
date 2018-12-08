@@ -25,9 +25,9 @@ describe('SocketRequest', () => {
     it('can be created', () => {
         expect(socket).toBeInstanceOf(Request);
         expect(socket).toHaveProperty('server', mockServer);
-        expect(socket).toHaveProperty('ioSocket', mockIo);
         expect(socket).toHaveProperty('id', mockUuidv4());
 
+        expect(mockIo.on).toHaveBeenCalledWith("disconnect", socket.onDisconnect);
         REQUEST_METHODS.forEach((method) => {
             expect(mockIo.on).toHaveBeenCalledWith(`test/${method.toLowerCase()}`, expect.any(Function));
         });

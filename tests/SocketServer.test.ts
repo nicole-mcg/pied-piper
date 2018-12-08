@@ -50,7 +50,6 @@ describe('SocketServer', () => {
     });
 
     it('will print a message on disconnect', () => {
-        const id = null;
         socketServer.onDisconnect(null);
         expect(console.log).toHaveBeenCalled();
     });

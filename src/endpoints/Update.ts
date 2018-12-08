@@ -7,7 +7,7 @@ import SocketServer from '@socket/SocketServer';
 
 export default class UpdateEndpoint extends Endpoint {
 
-    public get(payload: string, request: Request, server: SocketServer) {
+    public get(payload: string, request: Request) {
         if (!fs.existsSync(DATA_FILE_PATH)) {
             request.onError("Error loading file");
             return;

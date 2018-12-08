@@ -9,17 +9,16 @@ import SocketServer from '@socket/SocketServer';
 export default class SocketRequest extends Request {
     public readonly id: string;
     private server: SocketServer;
-    private ioSocket: any;
     private acknowledge: any;
 
     constructor(app: App, server: SocketServer, ioSocket: any) {
         super(app);
         autoBind(this);
         this.server = server;
-        this.ioSocket = ioSocket;
 
         this.id = uuidv4();
 
+        ioSocket.on('disconnect', this.onDisconnect);
         Object.keys(app.endpoints).forEach((endpoint) => {
             REQUEST_METHODS.forEach((method) => {
                 ioSocket.on(`${endpoint}/${method.toLowerCase()}`, (payload, acknowledge) => {

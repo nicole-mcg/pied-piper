@@ -18,8 +18,7 @@ describe('HttpRequest', () => {
     it('can be created', () => {
         expect(httpRequest).toBeInstanceOf(Request);
         expect(httpRequest).toHaveProperty('app', app);
-        expect(httpRequest).toHaveProperty('req', req);
-        expect(httpRequest).toHaveProperty('req', req);
+        expect(httpRequest).toHaveProperty('res', res);
         expect(httpRequest).toHaveProperty('payload', JSON.stringify(mockQuery));
     });
 
