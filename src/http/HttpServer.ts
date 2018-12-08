@@ -25,7 +25,7 @@ export default class HttpServer {
     }
 
     public start() {
-        this.baseServer.listen(this.port);
+        this.baseServer.listen(this.port, () => console.log(`Server started on port ${this.port}`));
     }
 
     private registerEndpoints(express: express.Express) {
