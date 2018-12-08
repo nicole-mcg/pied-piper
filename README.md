@@ -13,14 +13,14 @@ Linter: `npm run-script lint`
 
 Run: `npm start [port]`
 
-Endpoints are accessed using REST methods for Http 
-Endpoints are accessed via `{endpoint}/{method}` events for sockets
+### Endpoints
 
-  (E.g `contents/get`)
+- REST methods for Http
+- Endpoints are accessed via `{endpoint}/{method}` events for sockets
+  - (E.g `contents/get`)
+  - `socket.emit` callback for client is called with `(payload:string=null, error:string=false)`
 
-  `socket.emit` callback for client is called with `(payload:string=null, error:string=false)`
-
-Currently only endpoint is `contents`
+Currently only endpoint is `contents` which emits `contents` socket event to all clients when changed
 
 | Method  | Params  | Description |
 | ------------- | ------------- | ------------- |
