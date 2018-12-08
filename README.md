@@ -15,7 +15,9 @@ Run: `npm start [port]`
 
 Endpoints are accessed using REST methods for Http 
 Endpoints are accessed via `{endpoint}/{method}` events for sockets
+
   (E.g `contents/get`)
+
   `socket.emit` callback for client is called with `(payload:string=null, error:string=false)`
 
 Currently only endpoint is `contents`
