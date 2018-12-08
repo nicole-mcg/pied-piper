@@ -6,14 +6,12 @@ import Request from '@app/Request';
 
 export default class HttpRequest extends Request {
     public readonly payload: string;
-    private req: express.Request;
     private res: express.Response;
 
     constructor(app: App, req: express.Request, res: express.Response) {
         super(app);
         autoBind(this);
 
-        this.req = req;
         this.res = res;
 
         this.payload = Object.keys(req.query).length === 0 ? "" : JSON.stringify(req.query);
