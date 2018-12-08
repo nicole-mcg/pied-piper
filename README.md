@@ -14,6 +14,14 @@ Run tests: `npm test`
 
 Run inter: `npm run lint`
 
+Client side:
+
+`socket.emit('contents/put', payload, function(samePayload, error) {})`
+
+`socket.emit('contents/get', null, function(lastPutValue, error) {})`
+
+`socket.emit('contents/get', { key: jsonKeyInLastValue }, function(message, error) {})`
+
 ## Endpoints
 
 - REST methods for Http
@@ -23,7 +31,7 @@ Run inter: `npm run lint`
 
 Currently only endpoint is `contents` which emits `contents` socket event to all clients when changed
 
-| Method  | Params  | Description |
-| ------------- | ------------- | ------------- |
-| get  | key: string (optional)  | Retrieves the contents of the text file (at key if specified)  |
+| Method  | Params  | Description | Examples |
+| ------------- | ------------- | ------------- | ------------- |
+| get  | key: string (optional)  | Retrieves the contents of the text file (at key if specified)  | `http://localhost:8000/contents` `http://localhost:8000/contents?key=test` `
 | put  | any  | Replaces contents of the file with JSON representation of payload (if possible) and returns new data  |
