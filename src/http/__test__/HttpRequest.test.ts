@@ -1,5 +1,5 @@
-import Request from '../../Request';
-import HttpRequest from '../HttpRequest';
+import Request from '@app/Request';
+import HttpRequest from '@http/HttpRequest';
 
 describe('HttpRequest', () => {
     const req: any = {};

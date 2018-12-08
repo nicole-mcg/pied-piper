@@ -3,9 +3,9 @@ import IO from 'socket.io';
 
 import autoBind from 'auto-bind';
 
-import Endpoint from '../endpoints/Endpoint';
-import App from './../App';
-import SocketRequest from './SocketRequest';
+import App from '@app/App';
+import Endpoint from '@endpoints/Endpoint';
+import SocketRequest from '@socket/SocketRequest';
 
 export default class SocketServer {
     public io: any;

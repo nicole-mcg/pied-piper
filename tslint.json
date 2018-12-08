@@ -4,6 +4,7 @@
       "no-unused-expression": [true,
           "allow-new"
       ],
+      "no-implicit-dependencies": false,
       "no-submodule-imports": false,
       "object-literal-sort-keys": false,
       "no-shadowed-variable": false,

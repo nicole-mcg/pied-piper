@@ -1,8 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 
-import { DATA_DIR_PATH, DATA_FILE_PATH } from '../../Constants';
-import UpdateEndpoint from '../Update';
+import { DATA_DIR_PATH, DATA_FILE_PATH } from '@app/Constants';
+import UpdateEndpoint from '@endpoints/Update';
 
 jest.mock('fs', () => {
     let doesFileExist = true;

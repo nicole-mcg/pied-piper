@@ -1,11 +1,11 @@
 import express from 'express';
 import http from 'http';
 
-import { METHODS } from '../Constants';
-import Endpoint from '../endpoints/Endpoint';
-import App from './../App';
-import SocketServer from './../socket/SocketServer';
-import HttpRequest from './HttpRequest';
+import App from '@app/App';
+
+import Endpoint from '@endpoints/Endpoint';
+import HttpRequest from '@http/HttpRequest';
+import SocketServer from '@socket/SocketServer';
 
 export default class HttpServer {
     public readonly socketServer: SocketServer;
@@ -30,7 +30,7 @@ export default class HttpServer {
 
     private registerEndpoints(express: express.Express) {
         Object.keys(this.endpoints).forEach((endpoint) => {
-            METHODS.forEach((method) => {
+            ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'].forEach((method) => {
                 const functionName = method.toLowerCase();
                 express[functionName](`/${endpoint}`, this.createRouteHandler(endpoint, method));
             });

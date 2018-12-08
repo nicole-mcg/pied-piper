@@ -5,7 +5,14 @@
         "outDir": "built",
         "rootDir": ".",
         "sourceMap": false,
-        "esModuleInterop": true
+        "esModuleInterop": true,
+        "baseUrl": ".",
+        "paths": {
+            "@app/*": ["src/*"],
+            "@http/*": ["src/http/*"],
+            "@socket/*": ["src/socket/*"],
+            "@endpoints/*": ["src/endpoints/*"],      
+        }
     },
     "exclude": [
         "node_modules"

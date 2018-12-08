@@ -1,9 +1,8 @@
 import autoBind from 'auto-bind';
 import uuidv4 from 'uuid/v4';
 
-import App from '../App';
-import { METHODS } from '../Constants';
-import Request from '../Request';
+import App from '@app/App';
+import Request from '@app/Request';
 
 export default class SocketRequest extends Request {
     public readonly id: string;
@@ -18,7 +17,7 @@ export default class SocketRequest extends Request {
         this.id = uuidv4();
 
         Object.keys(app.endpoints).forEach((endpoint) => {
-            METHODS.forEach((method) => {
+            ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'].forEach((method) => {
                 ioSocket.on(`${endpoint}/${method.toLowerCase()}`, (payload) => this.onRequest(endpoint, payload, method));
             });
         });

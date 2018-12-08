@@ -1,21 +1,17 @@
 import mockIo from 'socket.io';
 import mockUuidv4 from 'uuid/v4';
 
-import App from '../../App';
-import { METHODS } from '../../Constants';
-import Request from '../../Request';
-import SocketRequest from '../SocketRequest';
+import Request from '@app/Request';
+import SocketRequest from '@socket/SocketRequest';
 
 jest.mock('socket.io');
 jest.mock('uuid/v4', () => (
     () => "test"
 ));
 
-jest.mock('../../App');
-
 describe('SocketRequest', () => {
     const mockEndpoint = { put: jest.fn() };
-    const mockApp: any = new App();
+    const mockApp: any = { onRequest: jest.fn() };
     mockApp.endpoints = { test: mockEndpoint };
     mockApp.handleEndpoint = jest.fn();
 
@@ -30,7 +26,7 @@ describe('SocketRequest', () => {
         expect(socket).toHaveProperty('ioSocket', mockIo());
         expect(socket).toHaveProperty('id', mockUuidv4());
 
-        METHODS.forEach((method) => {
+        ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'].forEach((method) => {
             expect(mockIo().on).toHaveBeenCalledWith(`test/${method.toLowerCase()}`, expect.any(Function));
         });
     });

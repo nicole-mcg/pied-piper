@@ -1,9 +1,9 @@
 import fs from 'fs';
 
-import Request from '../Request';
-import SocketServer from '../socket/SocketServer';
-import { DATA_DIR_PATH, DATA_FILE_PATH } from './../Constants';
-import Endpoint from './Endpoint';
+import { DATA_DIR_PATH, DATA_FILE_PATH } from '@app/Constants';
+import Request from '@app/Request';
+import Endpoint from '@endpoints/Endpoint';
+import SocketServer from '@socket/SocketServer';
 
 export default class UpdateEndpoint extends Endpoint {
 

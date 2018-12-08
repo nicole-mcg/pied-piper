@@ -1,6 +1,6 @@
 
-import App from './App';
-import SocketRequest from './socket/SocketRequest';
+import App from '@app/App';
+import SocketRequest from '@socket/SocketRequest';
 
 export default abstract class Request {
     protected app: App;

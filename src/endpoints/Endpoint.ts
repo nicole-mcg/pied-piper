@@ -1,8 +1,8 @@
-import { METHODS } from 'http';
+import App from '@app/App';
 
 export default class Endpoint {
     constructor() {
-        METHODS.forEach((method) => {
+        ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'].forEach((method) => {
             const funcName = method.toLowerCase();
             if (!this[funcName]) {
                 this[funcName] = () => null;

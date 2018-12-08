@@ -1,11 +1,11 @@
 import autoBind from 'auto-bind';
 import express from 'express';
 
-import { ENDPOINTS } from './Constants';
-import Endpoint from './endpoints/Endpoint';
-import HttpServer from './http/HttpServer';
-import Request from './Request';
-import SocketServer from './socket/SocketServer';
+import { ENDPOINTS } from '@app/Constants';
+import Request from '@app/Request';
+import Endpoint from '@endpoints/Endpoint';
+import HttpServer from '@http/HttpServer';
+import SocketServer from '@socket/SocketServer';
 
 export default class App {
     public readonly endpoints: { [s: string]: Endpoint };

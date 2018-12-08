@@ -1,8 +1,8 @@
 import autoBind from 'auto-bind';
 import express from 'express';
 
-import App from '../App';
-import Request from '../Request';
+import App from '@app/App';
+import Request from '@app/Request';
 
 export default class HttpRequest extends Request {
     private req: express.Request;

@@ -2,9 +2,8 @@ import http from 'http';
 
 import express from 'express';
 
-import { METHODS } from '../../Constants';
-import MockSocketServer from '../../socket/SocketServer';
-import HttpServer from './../HttpServer';
+import HttpServer from '@http/HttpServer';
+import MockSocketServer from '@socket/SocketServer';
 
 jest.mock('http');
 jest.mock('express', () => {
@@ -19,7 +18,9 @@ jest.mock('express', () => {
     });
 });
 
-jest.mock("../../socket/SocketServer");
+jest.mock("@socket/SocketServer", () => jest.fn().mockImplementation(() => {
+    return {};
+}));
 
 describe('HttpServer', () => {
     const mockApp: any = {};
@@ -35,10 +36,9 @@ describe('HttpServer', () => {
         expect(httpServer).toHaveProperty('port', testPort);
         expect(httpServer).toHaveProperty('endpoints', mockEndpoints);
         expect(httpServer).toHaveProperty('baseServer', expect.any(http.Server));
-        expect(httpServer).toHaveProperty('socketServer', expect.any(MockSocketServer));
+        expect(httpServer).toHaveProperty('socketServer');
 
-        const SocketServerClass: any = MockSocketServer;
-        expect(SocketServerClass).toHaveBeenCalledWith(mockApp, httpServer.baseServer, mockEndpoints);
+        expect(MockSocketServer).toHaveBeenCalledWith(mockApp, httpServer.baseServer, mockEndpoints);
     });
 
     it('will call registerEndpoints from constructor', () => {
@@ -60,7 +60,7 @@ describe('HttpServer', () => {
         httpServer.registerEndpoints(mockExpress);
 
         Object.keys(mockEndpoints).forEach((endpoint) => {
-            METHODS.forEach((method) => {
+            ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'].forEach((method) => {
                 method = method.toLowerCase();
                 expect(mockExpress).toHaveProperty(method);
                 const func = mockExpress[method];

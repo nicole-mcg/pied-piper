@@ -2,24 +2,25 @@
 import http from 'http';
 import mockIo from 'socket.io';
 
-import { METHODS } from '../../Constants';
-import MockSocketRequest from '../SocketRequest';
-import SocketServer from '../SocketServer';
+import MockSocketRequest from '@socket/SocketRequest';
+import SocketServer from '@socket/SocketServer';
 
 jest.mock('express');
 jest.mock('http');
 jest.mock('socket.io');
 
-jest.mock('../SocketRequest');
+jest.mock("@socket/SocketRequest", () => jest.fn().mockImplementation(() => {
+    return {};
+}));
+
 
 describe('SocketServer', () => {
-    const mockApp: any = {};
-    const mockEndpoint: any = METHODS.reduce((handlers, method) => {
+    const mockEndpoint: any = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'].reduce((handlers, method) => {
         handlers[method.toLowerCase()] = jest.fn();
         return handlers;
     }, {});
     const mockEndpoints: any = { test: mockEndpoint };
-    const mockPayload: string = "{}";
+    const mockApp: any = { endpoints: mockEndpoints };
 
     let socketServer: any = null;
 

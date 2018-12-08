@@ -1,9 +1,8 @@
 import mockExpress from 'express';
 
-import App from '../App';
-import { METHODS } from '../Constants';
-import MockHttpServer from '../http/HttpServer';
-import MockSocketServer from '../socket/SocketServer';
+import App from '@app/App';
+import MockHttpServer from '@http/HttpServer';
+import MockSocketServer from '@socket/SocketServer';
 
 const mockHttpServer = {
     socketServer: new MockSocketServer(null, null),
@@ -11,13 +10,13 @@ const mockHttpServer = {
 };
 
 jest.mock('express');
-jest.mock("../socket/SocketServer");
-jest.mock('../http/HttpServer', () =>
+jest.mock("@socket/SocketServer");
+jest.mock('@http/HttpServer', () =>
     jest.fn<MockHttpServer>().mockImplementation(() => mockHttpServer),
 );
 
 describe('App', () => {
-    const mockEndpoint: any = METHODS.reduce((handlers, method) => {
+    const mockEndpoint: any = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'].reduce((handlers, method) => {
         handlers[method.toLowerCase()] = jest.fn();
         return handlers;
     }, {});
@@ -58,7 +57,7 @@ describe('App', () => {
         const mockRequest = { onError: jest.fn() };
         const mockPayload = "{}";
 
-        METHODS.forEach((method) => {
+        ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'].forEach((method) => {
             method = method.toLowerCase();
             it(`can handle an endpoint with method: ${method}`, () => {
                 app.validatePayload = jest.fn().mockReturnValue(true);
@@ -77,7 +76,7 @@ describe('App', () => {
 
             app.onRequest('test', mockPayload, mockRequest);
 
-            METHODS.forEach((method) => {
+            ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'].forEach((method) => {
                 expect(mockEndpoint[method.toLowerCase()]).not.toHaveBeenCalled();
             });
             expect(app.validatePayload).toHaveBeenCalledWith(mockPayload);
