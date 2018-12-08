@@ -4,25 +4,25 @@ import mockUuidv4 from 'uuid/v4';
 import Client from '../../Client';
 import { METHODS } from '../../Constants';
 import Socket from '../Socket';
-import MockSocketServer from '../SocketServer';
+import App from '../../App';
 
 jest.mock('socket.io');
 jest.mock('uuid/v4', () => (
     () => "test"
 ));
 
-jest.mock('../SocketServer');
+jest.mock('../../App');
 
 describe('Socket', () => {
     const mockEndpoint = { put: jest.fn() };
-    const mockServer: any = new MockSocketServer(null);
-    mockServer.endpoints = { test: mockEndpoint };
-    mockServer.handleEndpoint = jest.fn();
+    const mockApp: any = new App();
+    mockApp.endpoints = { test: mockEndpoint };
+    mockApp.handleEndpoint = jest.fn();
 
     let socket: any = null;
 
     beforeEach(() => {
-        socket = new Socket(mockIo(), mockServer);
+        socket = new Socket(mockApp, mockIo());
     });
 
     it('can be created', () => {
@@ -39,11 +39,11 @@ describe('Socket', () => {
         const endpoint = 'update';
         const payload = "{}";
         const method = "null";
-        socket.server.handleEndpoint = jest.fn();
+        socket.app.handleEndpoint = jest.fn();
 
         socket.onRequest(`${endpoint}`, payload, method);
 
-        expect(socket.server.handleEndpoint).toHaveBeenCalledWith(endpoint, payload, socket, method);
+        expect(socket.app.handleEndpoint).toHaveBeenCalledWith(endpoint, payload, socket, method);
     });
 
     it('can emit an error', () => {

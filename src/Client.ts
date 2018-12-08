@@ -1,18 +1,18 @@
 
+import App from './App';
 import Socket from './socket/Socket';
-import SocketServer from './socket/SocketServer';
 
 export default abstract class Client {
-    protected server: SocketServer;
+    protected app: App;
 
-    constructor(server) {
-        this.server = server;
+    constructor(app) {
+        this.app = app;
     }
 
     public abstract onSuccess(payload: string);
     public abstract onError(message: string);
 
     public onRequest(endpoint: string, payload: string, method: string) {
-        this.server.handleEndpoint(endpoint, payload, this as unknown as Socket, method);
+        this.app.handleEndpoint(endpoint, payload, this as unknown as Socket, method);
     }
 }

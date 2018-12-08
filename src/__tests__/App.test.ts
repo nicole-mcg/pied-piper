@@ -6,7 +6,7 @@ import MockHttpServer from '../http/HttpServer';
 import MockSocketServer from '../socket/SocketServer';
 
 const mockHttpServer = {
-    socketServer: new MockSocketServer(null),
+    socketServer: new MockSocketServer(null, null),
     start: jest.fn(),
 };
 
@@ -36,7 +36,7 @@ describe('App', () => {
         expect(app).toHaveProperty('httpServer');
         expect(app).toHaveProperty('io', mockHttpServer.socketServer);
 
-        expect(MockHttpServer as any).toHaveBeenCalledWith(testPort, mockExpress(), mockEndpoints);
+        expect(MockHttpServer as any).toHaveBeenCalledWith(app,testPort, mockExpress(), mockEndpoints);
         expect(mockHttpServer.start).toHaveBeenCalled();
     });
 

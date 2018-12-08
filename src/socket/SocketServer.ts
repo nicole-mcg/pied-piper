@@ -5,13 +5,16 @@ import autoBind from 'auto-bind';
 
 import Client from '../Client';
 import Endpoint from '../endpoints/Endpoint';
+import App from './../App';
 import Socket from './Socket';
 
 export default class SocketServer {
     public io: any;
     public endpoints: { [s: string]: Endpoint };
+    private app: App;
 
-    constructor(httpServer: http.Server, endpoints: { [s: string]: Endpoint }= {}) {
+    constructor(app: App, httpServer: http.Server, endpoints: { [s: string]: Endpoint }= {}) {
+        this.app = app;
         autoBind(this);
         this.endpoints = endpoints;
         this.io = IO(httpServer);
@@ -20,33 +23,9 @@ export default class SocketServer {
     }
 
     public onConnectionRecieved(ioSocket: any): Socket {
-        const socket: Socket = new Socket(ioSocket, this);
+        const socket: Socket = new Socket(this.app, ioSocket);
         console.log("Connection recieved: " + socket.id);
         return socket;
-    }
-
-    public handleEndpoint(endpointName: string, payload: string, client: Client, method: string) {
-        if (payload && !this.validatePayload(payload)) {
-            client.onError("Invalid request data");
-            return;
-        }
-
-        const endpoint: Endpoint = this.endpoints[endpointName];
-        if (!endpoint) {
-            return;
-        }
-
-        const funcName = method.toLowerCase();
-        endpoint[funcName](payload, client, this);
-    }
-
-    private validatePayload(payload: string): boolean {
-        try {
-            JSON.parse(payload);
-            return true;
-        } catch (e) {
-            return false;
-        }
     }
 
 }

@@ -4,19 +4,19 @@ import HttpClient from '../HttpClient';
 describe('HttpClient', () => {
     const req: any = {};
     const res: any = { send: jest.fn() };
-    const server: any = {};
+    const app: any = {};
 
     let httpClient;
 
     beforeEach(() => {
-        httpClient = new HttpClient(req, res, server);
+        httpClient = new HttpClient(app, req, res);
     });
 
     it('can be created', () => {
         expect(httpClient).toBeInstanceOf(Client);
         expect(httpClient).toHaveProperty('req', req);
         expect(httpClient).toHaveProperty('req', req);
-        expect(httpClient).toHaveProperty('server', server);
+        expect(httpClient).toHaveProperty('app', app);
     });
 
     it('can send report success back to the client', () => {

@@ -16,7 +16,7 @@ export default class App {
     constructor(port: number= 8000, endpoints= ENDPOINTS) {
         autoBind(this);
         this.express = express();
-        this.httpServer = new HttpServer(port, this.express, endpoints);
+        this.httpServer = new HttpServer(this, port, this.express, endpoints);
         this.io = this.httpServer.socketServer;
         this.endpoints = endpoints;
 

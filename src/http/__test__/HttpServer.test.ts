@@ -22,13 +22,14 @@ jest.mock('express', () => {
 jest.mock("../../socket/SocketServer");
 
 describe('HttpServer', () => {
+    const mockApp: any = {};
     const mockEndpoint: any = { handleEndpoint: jest.fn() };
     const mockEndpoints = { test: mockEndpoint };
     const mockExpress: any = express();
     const testPort = 99;
 
     it('can be created', () => {
-        const httpServer: any = new HttpServer(testPort, mockExpress, mockEndpoints);
+        const httpServer: any = new HttpServer(mockApp, testPort, mockExpress, mockEndpoints);
 
         expect(httpServer).toBeInstanceOf(HttpServer);
         expect(httpServer).toHaveProperty('port', testPort);
@@ -37,7 +38,7 @@ describe('HttpServer', () => {
         expect(httpServer).toHaveProperty('socketServer', expect.any(MockSocketServer));
 
         const SocketServerClass: any = MockSocketServer;
-        expect(SocketServerClass).toHaveBeenCalledWith(httpServer.baseServer, mockEndpoints);
+        expect(SocketServerClass).toHaveBeenCalledWith(mockApp, httpServer.baseServer, mockEndpoints);
     });
 
     it('will call registerEndpoints from constructor', () => {
@@ -46,7 +47,7 @@ describe('HttpServer', () => {
         const oldRegisterEndpoints = httpServerPrototype.registerEndpoints;
         httpServerPrototype.registerEndpoints = jest.fn();
 
-        const httpServer: any = new HttpServer(testPort, mockExpress, mockEndpoints);
+        const httpServer: any = new HttpServer(mockApp, testPort, mockExpress, mockEndpoints);
         expect(httpServer.registerEndpoints).toHaveBeenCalledWith(mockExpress);
 
         // Restore HttpServer prototype
@@ -54,7 +55,7 @@ describe('HttpServer', () => {
     });
 
     it('can register endpoints', () => {
-        const httpServer: any = new HttpServer(testPort, mockExpress, mockEndpoints);
+        const httpServer: any = new HttpServer(mockApp, testPort, mockExpress, mockEndpoints);
 
         httpServer.registerEndpoints(mockExpress);
 
@@ -69,7 +70,7 @@ describe('HttpServer', () => {
     });
 
     it('can be started', () => {
-        const httpServer: any = new HttpServer(testPort, mockExpress, mockEndpoints);
+        const httpServer: any = new HttpServer(mockApp, testPort, mockExpress, mockEndpoints);
 
         httpServer.baseServer.listen = jest.fn();
         httpServer.start();

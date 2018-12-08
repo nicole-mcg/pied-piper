@@ -3,13 +3,14 @@ import express from 'express';
 
 import Client from '../Client';
 import SocketServer from '../socket/SocketServer';
+import App from './../App';
 
 export default class HttpClient extends Client {
     private req: express.Request;
     private res: express.Response;
 
-    constructor(req: express.Request, res: express.Response, server: SocketServer) {
-        super(server);
+    constructor(app: App, req: express.Request, res: express.Response) {
+        super(app);
         autoBind(this);
 
         this.req = req;
