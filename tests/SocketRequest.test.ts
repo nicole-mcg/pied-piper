@@ -1,15 +1,14 @@
-import mockIo from 'socket.io';
 import mockUuidv4 from 'uuid/v4';
 
 import Request from '@app/Request';
 import SocketRequest from '@socket/SocketRequest';
 
-jest.mock('socket.io');
 jest.mock('uuid/v4', () => (
     () => "test"
 ));
 
 describe('SocketRequest', () => {
+    const mockIo = { on: jest.fn(), emit: jest.fn() };
     const mockEndpoint = { put: jest.fn() };
     const mockApp: any = { onRequest: jest.fn() };
     mockApp.endpoints = { test: mockEndpoint };
@@ -18,16 +17,16 @@ describe('SocketRequest', () => {
     let socket: any = null;
 
     beforeEach(() => {
-        socket = new SocketRequest(mockApp, mockIo());
+        socket = new SocketRequest(mockApp, mockIo);
     });
 
     it('can be created', () => {
         expect(socket).toBeInstanceOf(Request);
-        expect(socket).toHaveProperty('ioSocket', mockIo());
+        expect(socket).toHaveProperty('ioSocket', mockIo);
         expect(socket).toHaveProperty('id', mockUuidv4());
 
         ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'].forEach((method) => {
-            expect(mockIo().on).toHaveBeenCalledWith(`test/${method.toLowerCase()}`, expect.any(Function));
+            expect(mockIo.on).toHaveBeenCalledWith(`test/${method.toLowerCase()}`, expect.any(Function));
         });
     });
 
@@ -46,7 +45,7 @@ describe('SocketRequest', () => {
 
         socket.onError(message);
 
-        expect(mockIo().emit).toHaveBeenCalledWith('onerror', message);
+        expect(mockIo.emit).toHaveBeenCalledWith('onerror', message);
     });
 
 });
