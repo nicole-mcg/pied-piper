@@ -22,9 +22,13 @@ export default class SocketServer {
     }
 
     public onConnectionRecieved(ioSocket: any): SocketRequest {
-        const socket: SocketRequest = new SocketRequest(this.app, ioSocket);
-        console.log("Connection recieved: " + socket.id);
+        const socket: SocketRequest = new SocketRequest(this.app, this, ioSocket);
+        console.log(`Connection recieved: ${socket.id}`);
         return socket;
+    }
+
+    public onDisconnect(id: string) {
+        console.log(`Connection disconnected: ${id}`);
     }
 
 }

@@ -44,8 +44,14 @@ describe('SocketServer', () => {
     it('can accept a socket', () => {
         const recievedSocket = socketServer.onConnectionRecieved(mockIo);
 
-        expect(MockSocketRequest).toHaveBeenCalledWith(mockApp, mockIo);
+        expect(MockSocketRequest).toHaveBeenCalledWith(mockApp, socketServer, mockIo);
         expect(recievedSocket).toBeTruthy();
+        expect(console.log).toHaveBeenCalled();
+    });
+
+    it('will print a message on disconnect', () => {
+        const id = null;
+        socketServer.onDisconnect(null);
         expect(console.log).toHaveBeenCalled();
     });
 
