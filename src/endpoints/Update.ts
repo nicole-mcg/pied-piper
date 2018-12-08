@@ -1,13 +1,13 @@
 import fs from 'fs';
 
-import { DATA_DIR_PATH, DATA_FILE_PATH } from './../Constants';
 import Client from '../Client';
 import SocketServer from '../socket/SocketServer';
-import Endpoint from './Endpoint'
+import { DATA_DIR_PATH, DATA_FILE_PATH } from './../Constants';
+import Endpoint from './Endpoint';
 
 export default class UpdateEndpoint extends Endpoint {
 
-    get(payload:string, client:Client, server:SocketServer) {
+    public get(payload: string, client: Client, server: SocketServer) {
         if (!fs.existsSync(DATA_FILE_PATH)) {
             client.onError("Error loading file");
             return;
@@ -22,14 +22,14 @@ export default class UpdateEndpoint extends Endpoint {
             return;
         }
 
-        if (!payload) {           
+        if (!payload) {
             client.onSuccess(JSON.stringify(fileContents));
             return;
         }
 
         let key;
         try {
-            key = JSON.parse(payload).key
+            key = JSON.parse(payload).key;
         } catch (e) {
             client.onError("Invalid key");
             return;
@@ -42,22 +42,22 @@ export default class UpdateEndpoint extends Endpoint {
 
         client.onSuccess(JSON.stringify(fileContents[key]));
     }
-    
-    put(payload:string, client:Client, server:SocketServer) {
+
+    public put(payload: string, client: Client, server: SocketServer) {
         try {
             if (!payload) {
                 return;
             }
 
-            if (!fs.existsSync(DATA_DIR_PATH)){
+            if (!fs.existsSync(DATA_DIR_PATH)) {
                 fs.mkdirSync(DATA_DIR_PATH);
             }
 
-            fs.writeFileSync(DATA_FILE_PATH, payload)
+            fs.writeFileSync(DATA_FILE_PATH, payload);
             server.io.emit('update', payload); // Emit to all connected
             client.onSuccess(payload);
         } catch (error) {
-            console.log(`Error saving file: ${error}`)                
+            console.log(`Error saving file: ${error}`);
             client.onError("Error saving data");
         }
     }

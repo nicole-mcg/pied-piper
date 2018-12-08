@@ -5,12 +5,12 @@ export const DATA_FILE_PATH = __dirname + "/../data/file.json";
 
 export const ENDPOINTS = {
     contents: new UpdateEndpoint(),
-}
+};
 
 export const METHODS = [
     'GET',
     'POST',
     'PUT',
     'PATCH',
-    'DELETE'
-]
+    'DELETE',
+];

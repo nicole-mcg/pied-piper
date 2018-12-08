@@ -1,19 +1,19 @@
-import express from 'express';
 import autoBind from 'auto-bind';
+import express from 'express';
 
-import SocketServer from './socket/SocketServer';
-import HttpServer from './http/HttpServer';
-import { ENDPOINTS } from './Constants';
 import Client from './Client';
+import { ENDPOINTS } from './Constants';
 import Endpoint from './endpoints/Endpoint';
+import HttpServer from './http/HttpServer';
+import SocketServer from './socket/SocketServer';
 
 export default class App {
-    private express:express.Express;
-    private httpServer:HttpServer;
-    private io:SocketServer;
-    public readonly endpoints:{ [s: string]: Endpoint };
+    public readonly endpoints: { [s: string]: Endpoint };
+    private express: express.Express;
+    private httpServer: HttpServer;
+    private io: SocketServer;
 
-    constructor(port:number=8000, endpoints=ENDPOINTS) {
+    constructor(port: number= 8000, endpoints= ENDPOINTS) {
         autoBind(this);
         this.express = express();
         this.httpServer = new HttpServer(port, this.express, endpoints);
@@ -23,22 +23,22 @@ export default class App {
         this.httpServer.start();
     }
 
-    handleEndpoint(endpointName:string, payload:string, client:Client, method:string) {
+    public handleEndpoint(endpointName: string, payload: string, client: Client, method: string) {
         if (!this.validatePayload(payload)) {
             client.onError("Invalid request data");
             return;
         }
 
-        const endpoint:Endpoint = this.endpoints[endpointName];
+        const endpoint: Endpoint = this.endpoints[endpointName];
         if (!endpoint) {
             return;
-        }  
+        }
 
         const funcName = method.toLowerCase();
         endpoint[funcName](payload, client, this.io);
     }
 
-    private validatePayload(payload:string):boolean {
+    private validatePayload(payload: string): boolean {
         if (!payload) {
             return true;
         }
@@ -46,7 +46,7 @@ export default class App {
         try {
             JSON.parse(payload);
             return true;
-        } catch(e) {
+        } catch (e) {
             return false;
         }
     }

@@ -1,6 +1,12 @@
 {
     "extends": "tslint:latest",
     "rules": {
+      "no-unused-expression": [true,
+          "allow-new"
+      ],
+      "no-submodule-imports": false,
+      "object-literal-sort-keys": false,
+      "no-shadowed-variable": false,
       "no-console": false,
       "callable-types": true,
       "interface-name": false,
@@ -24,5 +30,10 @@
         "allow-pascal-case"
       ],
       "quotemark": false
+    },
+    "linterOptions": {
+        "exclude": [
+            "node_modules"
+        ]
     }
   }
