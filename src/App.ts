@@ -1,10 +1,10 @@
 import autoBind from 'auto-bind';
 import express from 'express';
 
-import Client from './Client';
 import { ENDPOINTS } from './Constants';
 import Endpoint from './endpoints/Endpoint';
 import HttpServer from './http/HttpServer';
+import Request from './Request';
 import SocketServer from './socket/SocketServer';
 
 export default class App {
@@ -23,9 +23,9 @@ export default class App {
         this.httpServer.start();
     }
 
-    public onRequest(endpointName: string, payload: string, client: Client, method: string) {
+    public onRequest(endpointName: string, payload: string, request: Request, method: string) {
         if (!this.validatePayload(payload)) {
-            client.onError("Invalid request data");
+            request.onError("Invalid request data");
             return;
         }
 
@@ -35,7 +35,7 @@ export default class App {
         }
 
         const funcName = method.toLowerCase();
-        endpoint[funcName](payload, client, this.io);
+        endpoint[funcName](payload, request, this.io);
     }
 
     private validatePayload(payload: string): boolean {

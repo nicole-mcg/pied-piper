@@ -13,7 +13,7 @@ jest.mock('socket.io');
 jest.mock('../Socket');
 
 describe('SocketServer', () => {
-    const mockApp:any = {};
+    const mockApp: any = {};
     const mockClient = { onError: jest.fn() };
     const mockEndpoint: any = METHODS.reduce((handlers, method) => {
         handlers[method.toLowerCase()] = jest.fn();

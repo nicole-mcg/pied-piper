@@ -1,11 +1,10 @@
 import autoBind from 'auto-bind';
 import express from 'express';
 
-import Client from '../Client';
-import SocketServer from '../socket/SocketServer';
-import App from './../App';
+import App from '../App';
+import Request from '../Request';
 
-export default class HttpClient extends Client {
+export default class HttpClient extends Request {
     private req: express.Request;
     private res: express.Response;
 

@@ -36,7 +36,7 @@ describe('App', () => {
         expect(app).toHaveProperty('httpServer');
         expect(app).toHaveProperty('io', mockHttpServer.socketServer);
 
-        expect(MockHttpServer as any).toHaveBeenCalledWith(app,testPort, mockExpress(), mockEndpoints);
+        expect(MockHttpServer as any).toHaveBeenCalledWith(app, testPort, mockExpress(), mockEndpoints);
         expect(mockHttpServer.start).toHaveBeenCalled();
     });
 

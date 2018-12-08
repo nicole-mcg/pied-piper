@@ -1,15 +1,15 @@
 import fs from 'fs';
 
-import Client from '../Client';
+import Request from '../Request';
 import SocketServer from '../socket/SocketServer';
 import { DATA_DIR_PATH, DATA_FILE_PATH } from './../Constants';
 import Endpoint from './Endpoint';
 
 export default class UpdateEndpoint extends Endpoint {
 
-    public get(payload: string, client: Client, server: SocketServer) {
+    public get(payload: string, request: Request, server: SocketServer) {
         if (!fs.existsSync(DATA_FILE_PATH)) {
-            client.onError("Error loading file");
+            request.onError("Error loading file");
             return;
         }
 
@@ -18,12 +18,12 @@ export default class UpdateEndpoint extends Endpoint {
         try {
             fileContents = JSON.parse(fileContents);
         } catch (e) {
-            client.onError("Error loading file");
+            request.onError("Error loading file");
             return;
         }
 
         if (!payload) {
-            client.onSuccess(JSON.stringify(fileContents));
+            request.onSuccess(JSON.stringify(fileContents));
             return;
         }
 
@@ -31,19 +31,19 @@ export default class UpdateEndpoint extends Endpoint {
         try {
             key = JSON.parse(payload).key;
         } catch (e) {
-            client.onError("Invalid key");
+            request.onError("Invalid key");
             return;
         }
 
         if (!fileContents[key]) {
-            client.onError("Key does not exist");
+            request.onError("Key does not exist");
             return;
         }
 
-        client.onSuccess(JSON.stringify(fileContents[key]));
+        request.onSuccess(JSON.stringify(fileContents[key]));
     }
 
-    public put(payload: string, client: Client, server: SocketServer) {
+    public put(payload: string, request: Request, server: SocketServer) {
         try {
             if (!payload) {
                 return;
@@ -55,10 +55,10 @@ export default class UpdateEndpoint extends Endpoint {
 
             fs.writeFileSync(DATA_FILE_PATH, payload);
             server.io.emit('update', payload); // Emit to all connected
-            client.onSuccess(payload);
+            request.onSuccess(payload);
         } catch (error) {
             console.log(`Error saving file: ${error}`);
-            client.onError("Error saving data");
+            request.onError("Error saving data");
         }
     }
 

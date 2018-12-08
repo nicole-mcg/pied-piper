@@ -3,7 +3,6 @@ import IO from 'socket.io';
 
 import autoBind from 'auto-bind';
 
-import Client from '../Client';
 import Endpoint from '../endpoints/Endpoint';
 import App from './../App';
 import Socket from './Socket';
