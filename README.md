@@ -26,8 +26,8 @@ SocketIO Client usage:
   const io = require("socket.io-client"),
   ioClient = io.connect("http://localhost:8000");
 
-  socket.emit('contents/put', payload, function(samePayload, error) {});
-  socket.emit('contents/get', null, function(lastPutValue, error) {})
+  socket.emit('contents/put', payload, function(message, error) {});
+  socket.emit('contents/get', null, function(message, error) {})
   socket.emit('contents/get', { key: jsonKeyInLastValue }, function(message, error) {})
 ```
 
@@ -40,7 +40,7 @@ SocketIO Client usage:
 
 Currently only endpoint is `contents` which emits `contents` socket event to all clients when changed
 
-| Method  | Params  | Description |
-| ------------- | ------------- | ------------- |
-| get  | key: string (optional)  | Retrieves the contents of the text file (at key if specified)  | 
-| put  | any  | Replaces contents of the file with JSON representation of payload (if possible) and returns new data  |
+| Method  | Params  | Response  | Description |
+| ------------- | ------------- | ------------- | ------------- |
+| get  | key: string (optional)  | Last stored JSON (or key) | Retrieves the contents of the text file (at key if specified)  | 
+| put  | any  | The stored value or an object with truthy `error` key on error | Replaces contents of the file with JSON representation of payload (if possible) and returns new data  |
