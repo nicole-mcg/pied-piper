@@ -8,12 +8,11 @@ A small program to update a text file and listen for updates via `socket.io`
 
 ## Usage
 
+Run server: `npm start [port]`
 Tests: `npm test`
 Linter: `npm run-script lint`
 
-Run: `npm start [port]`
-
-### Endpoints
+## Endpoints
 
 - REST methods for Http
 - Endpoints are accessed via `{endpoint}/{method}` events for sockets
@@ -26,6 +25,3 @@ Currently only endpoint is `contents` which emits `contents` socket event to all
 | ------------- | ------------- | ------------- |
 | get  | key: string (optional)  | Retrieves the contents of the text file (at key if specified)  |
 | put  | any  | Replaces contents of the file with JSON representation of payload (if possible) and returns new data  |
-
-# Tests
-
