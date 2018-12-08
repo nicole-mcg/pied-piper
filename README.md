@@ -14,13 +14,22 @@ Run tests: `npm test`
 
 Run inter: `npm run lint`
 
-Client side:
+HTTP usage:
+```
+http://localhost:8000/contents //HTTP PUT method
+http://localhost:8000/contents
+http://localhost:8000/contents?key=test
+```
 
-`socket.emit('contents/put', payload, function(samePayload, error) {})`
+SocketIO Client usage:
+```
+  const io = require("socket.io-client"),
+  ioClient = io.connect("http://localhost:8000");
 
-`socket.emit('contents/get', null, function(lastPutValue, error) {})`
-
-`socket.emit('contents/get', { key: jsonKeyInLastValue }, function(message, error) {})`
+  socket.emit('contents/put', payload, function(samePayload, error) {});
+  socket.emit('contents/get', null, function(lastPutValue, error) {})
+  socket.emit('contents/get', { key: jsonKeyInLastValue }, function(message, error) {})
+```
 
 ## Endpoints
 
@@ -31,7 +40,7 @@ Client side:
 
 Currently only endpoint is `contents` which emits `contents` socket event to all clients when changed
 
-| Method  | Params  | Description | Examples |
-| ------------- | ------------- | ------------- | ------------- |
-| get  | key: string (optional)  | Retrieves the contents of the text file (at key if specified)  | `http://localhost:8000/contents` `http://localhost:8000/contents?key=test` `
+| Method  | Params  | Description |
+| ------------- | ------------- | ------------- |
+| get  | key: string (optional)  | Retrieves the contents of the text file (at key if specified)  | 
 | put  | any  | Replaces contents of the file with JSON representation of payload (if possible) and returns new data  |
