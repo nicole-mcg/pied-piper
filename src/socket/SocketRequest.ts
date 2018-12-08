@@ -2,6 +2,7 @@ import autoBind from 'auto-bind';
 import uuidv4 from 'uuid/v4';
 
 import App from '@app/App';
+import { REQUEST_METHODS } from '@app/Constants';
 import Request from '@app/Request';
 
 export default class SocketRequest extends Request {
@@ -18,7 +19,7 @@ export default class SocketRequest extends Request {
         this.id = uuidv4();
 
         Object.keys(app.endpoints).forEach((endpoint) => {
-            ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'].forEach((method) => {
+            REQUEST_METHODS.forEach((method) => {
                 ioSocket.on(`${endpoint}/${method.toLowerCase()}`, (payload, acknowledge) => {
                     this.acknowledge = acknowledge;
                     this.onRequest(endpoint, payload, method);

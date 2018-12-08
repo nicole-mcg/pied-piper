@@ -1,8 +1,8 @@
-import App from '@app/App';
+import { REQUEST_METHODS } from '@app/Constants';
 
 export default class Endpoint {
     constructor() {
-        ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'].forEach((method) => {
+        REQUEST_METHODS.forEach((method) => {
             const funcName = method.toLowerCase();
             if (!this[funcName]) {
                 this[funcName] = () => null;

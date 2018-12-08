@@ -2,6 +2,7 @@
 import http from 'http';
 import io from 'socket.io';
 
+import { REQUEST_METHODS } from '@app/Constants';
 import MockSocketRequest from '@socket/SocketRequest';
 import SocketServer from '@socket/SocketServer';
 
@@ -19,7 +20,7 @@ jest.mock("@socket/SocketRequest", () => jest.fn().mockImplementation(() => {
 
 describe('SocketServer', () => {
     const mockIo = io();
-    const mockEndpoint: any = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'].reduce((handlers, method) => {
+    const mockEndpoint: any = REQUEST_METHODS.reduce((handlers, method) => {
         handlers[method.toLowerCase()] = jest.fn();
         return handlers;
     }, {});

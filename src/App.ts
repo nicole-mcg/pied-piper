@@ -1,9 +1,9 @@
 import autoBind from 'auto-bind';
 import express from 'express';
 
-import { ENDPOINTS } from '@app/Constants';
 import Request from '@app/Request';
 import Endpoint from '@endpoints/Endpoint';
+import ENDPOINTS from '@endpoints/index';
 import HttpServer from '@http/HttpServer';
 import SocketServer from '@socket/SocketServer';
 

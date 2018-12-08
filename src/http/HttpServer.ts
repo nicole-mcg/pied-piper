@@ -3,6 +3,7 @@ import http from 'http';
 
 import App from '@app/App';
 
+import { REQUEST_METHODS } from '@app/Constants';
 import Endpoint from '@endpoints/Endpoint';
 import HttpRequest from '@http/HttpRequest';
 import SocketServer from '@socket/SocketServer';
@@ -30,7 +31,7 @@ export default class HttpServer {
 
     private registerEndpoints(express: express.Express) {
         Object.keys(this.endpoints).forEach((endpoint) => {
-            ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'].forEach((method) => {
+            REQUEST_METHODS.forEach((method) => {
                 const functionName = method.toLowerCase();
                 express[functionName](`/${endpoint}`, this.createRouteHandler(endpoint, method));
             });

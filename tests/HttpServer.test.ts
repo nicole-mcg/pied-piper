@@ -2,6 +2,7 @@ import http from 'http';
 
 import express from 'express';
 
+import { REQUEST_METHODS } from '@app/Constants';
 import HttpServer from '@http/HttpServer';
 import MockSocketServer from '@socket/SocketServer';
 
@@ -60,7 +61,7 @@ describe('HttpServer', () => {
         httpServer.registerEndpoints(mockExpress);
 
         Object.keys(mockEndpoints).forEach((endpoint) => {
-            ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'].forEach((method) => {
+            REQUEST_METHODS.forEach((method) => {
                 method = method.toLowerCase();
                 expect(mockExpress).toHaveProperty(method);
                 const func = mockExpress[method];

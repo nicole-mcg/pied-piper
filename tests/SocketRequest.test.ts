@@ -1,5 +1,6 @@
 import mockUuidv4 from 'uuid/v4';
 
+import { REQUEST_METHODS } from '@app/Constants';
 import Request from '@app/Request';
 import SocketRequest from '@socket/SocketRequest';
 
@@ -25,7 +26,7 @@ describe('SocketRequest', () => {
         expect(socket).toHaveProperty('ioSocket', mockIo);
         expect(socket).toHaveProperty('id', mockUuidv4());
 
-        ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'].forEach((method) => {
+        REQUEST_METHODS.forEach((method) => {
             expect(mockIo.on).toHaveBeenCalledWith(`test/${method.toLowerCase()}`, expect.any(Function));
         });
     });
