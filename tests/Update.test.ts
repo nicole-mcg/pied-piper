@@ -65,7 +65,7 @@ describe('UpdateEndpoint', () => {
             expect(fs.existsSync).toHaveBeenCalledWith(DATA_DIR_PATH);
             expect(fs.writeFileSync).toHaveBeenCalledWith(DATA_FILE_PATH, payload);
             expect(mockRequest.onSuccess).toHaveBeenCalledWith(payload);
-            expect(mockServer.io.emit).toHaveBeenCalledWith('update', payload);
+            expect(mockServer.io.emit).toHaveBeenCalledWith('contents', payload);
         });
 
         it('will make the directory if it doesnt exist', () => {

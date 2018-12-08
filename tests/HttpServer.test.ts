@@ -74,7 +74,7 @@ describe('HttpServer', () => {
 
         httpServer.baseServer.listen = jest.fn();
         httpServer.start();
-        expect(httpServer.baseServer.listen).toHaveBeenCalledWith(testPort);
+        expect(httpServer.baseServer.listen).toHaveBeenCalledWith(testPort, expect.any(Function));
     });
 
 });

@@ -31,7 +31,7 @@ describe('SocketRequest', () => {
     });
 
     it('will notify the server on update', () => {
-        const endpoint = 'update';
+        const endpoint = 'endpoint';
         const payload = "{}";
         const method = "null";
 
@@ -42,10 +42,11 @@ describe('SocketRequest', () => {
 
     it('can emit an error', () => {
         const message: string = "Could not update";
+        socket.acknowledge = jest.fn();
 
         socket.onError(message);
 
-        expect(mockIo.emit).toHaveBeenCalledWith('onerror', message);
+        expect(socket.acknowledge).toHaveBeenCalledWith(null, message);
     });
 
 });
