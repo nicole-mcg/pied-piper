@@ -35,7 +35,7 @@ export default class UpdateEndpoint extends Endpoint {
             return;
         }
 
-        if (!fileContents[key]) {
+        if (fileContents[key] === undefined) {
             request.onError("Key does not exist");
             return;
         }
