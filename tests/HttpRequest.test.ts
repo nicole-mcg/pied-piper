@@ -1,5 +1,5 @@
-import Request from '@app/Request';
-import HttpRequest from '@http/HttpRequest';
+import Connection from '@app/Connection';
+import HttpConnection from '@app/http/HttpConnection';
 
 describe('HttpRequest', () => {
     const mockQuery = { test: 1 };
@@ -12,11 +12,11 @@ describe('HttpRequest', () => {
     let httpRequest;
 
     beforeEach(() => {
-        httpRequest = new HttpRequest(app, req, res);
+        httpRequest = new HttpConnection(app, req, res);
     });
 
     it('can be created', () => {
-        expect(httpRequest).toBeInstanceOf(Request);
+        expect(httpRequest).toBeInstanceOf(Connection);
         expect(httpRequest).toHaveProperty('app', app);
         expect(httpRequest).toHaveProperty('res', res);
         expect(httpRequest).toHaveProperty('payload', JSON.stringify(mockQuery));

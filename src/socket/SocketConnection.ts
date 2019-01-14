@@ -2,11 +2,11 @@ import autoBind from 'auto-bind';
 import uuidv4 from 'uuid/v4';
 
 import App from '@app/App';
+import Connection from '@app/Connection';
 import { REQUEST_METHODS } from '@app/Constants';
-import Request from '@app/Request';
 import SocketServer from '@socket/SocketServer';
 
-export default class SocketRequest extends Request {
+export default class SocketConnection extends Connection {
     public readonly id: string;
     private server: SocketServer;
     private acknowledge: any;

@@ -1,7 +1,7 @@
 import autoBind from 'auto-bind';
 import express from 'express';
 
-import Request from '@app/Request';
+import Connection from '@app/Connection';
 import Endpoint from '@endpoints/Endpoint';
 import ENDPOINTS from '@endpoints/index';
 import HttpServer from '@http/HttpServer';
@@ -23,7 +23,7 @@ export default class App {
         this.httpServer.start();
     }
 
-    public onRequest(endpointName: string, payload: string, request: Request, method: string) {
+    public onRequest(endpointName: string, payload: string, request: Connection, method: string) {
         if (!this.validatePayload(payload)) {
             request.onError("Invalid request data");
             return;

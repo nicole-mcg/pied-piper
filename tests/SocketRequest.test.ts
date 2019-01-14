@@ -1,14 +1,14 @@
 import mockUuidv4 from 'uuid/v4';
 
+import Connection from '@app/Connection';
 import { REQUEST_METHODS } from '@app/Constants';
-import Request from '@app/Request';
-import SocketRequest from '@socket/SocketRequest';
+import SocketConnection from '@app/socket/SocketConnection';
 
 jest.mock('uuid/v4', () => (
     () => "test"
 ));
 
-describe('SocketRequest', () => {
+describe('SocketConnection', () => {
     const mockServer: any = { onDisconnect: jest.fn() };
     const mockIo = { on: jest.fn(), emit: jest.fn() };
     const mockEndpoint = { put: jest.fn() };
@@ -19,11 +19,11 @@ describe('SocketRequest', () => {
     let socket: any = null;
 
     beforeEach(() => {
-        socket = new SocketRequest(mockApp, mockServer, mockIo);
+        socket = new SocketConnection(mockApp, mockServer, mockIo);
     });
 
     it('can be created', () => {
-        expect(socket).toBeInstanceOf(Request);
+        expect(socket).toBeInstanceOf(Connection);
         expect(socket).toHaveProperty('server', mockServer);
         expect(socket).toHaveProperty('id', mockUuidv4());
 

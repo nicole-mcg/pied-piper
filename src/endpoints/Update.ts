@@ -1,13 +1,13 @@
 import fs from 'fs';
 
+import Connection from '@app/Connection';
 import { DATA_DIR_PATH, DATA_FILE_PATH } from '@app/Constants';
-import Request from '@app/Request';
 import Endpoint from '@endpoints/Endpoint';
 import SocketServer from '@socket/SocketServer';
 
 export default class UpdateEndpoint extends Endpoint {
 
-    public get(payload: string, request: Request) {
+    public get(payload: string, request: Connection) {
         if (!fs.existsSync(DATA_FILE_PATH)) {
             request.onError("Error loading file");
             return;
@@ -43,7 +43,7 @@ export default class UpdateEndpoint extends Endpoint {
         request.onSuccess(JSON.stringify(fileContents[key]));
     }
 
-    public put(payload: string, request: Request, server: SocketServer) {
+    public put(payload: string, request: Connection, server: SocketServer) {
         try {
             if (!payload) {
                 return;

@@ -4,8 +4,8 @@ import http from 'http';
 import App from '@app/App';
 
 import { REQUEST_METHODS } from '@app/Constants';
+import HttpConnection from '@app/http/HttpConnection';
 import Endpoint from '@endpoints/Endpoint';
-import HttpRequest from '@http/HttpRequest';
 import SocketServer from '@socket/SocketServer';
 
 export default class HttpServer {
@@ -40,7 +40,7 @@ export default class HttpServer {
 
     private createRouteHandler(endpoint, method) {
         return (req: express.Request, res: express.Response) => {
-            const httpRequest: HttpRequest = new HttpRequest(this.app, req, res);
+            const httpRequest: HttpConnection = new HttpConnection(this.app, req, res);
             httpRequest.onRequest(endpoint, httpRequest.payload, method);
         };
     }

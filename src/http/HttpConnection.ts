@@ -2,9 +2,9 @@ import autoBind from 'auto-bind';
 import express from 'express';
 
 import App from '@app/App';
-import Request from '@app/Request';
+import Connection from '@app/Connection';
 
-export default class HttpRequest extends Request {
+export default class HttpConnection extends Connection {
     public readonly payload: string;
     private res: express.Response;
 

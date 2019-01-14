@@ -4,8 +4,8 @@ import IO from 'socket.io';
 import autoBind from 'auto-bind';
 
 import App from '@app/App';
+import SocketConnection from '@app/socket/SocketConnection';
 import Endpoint from '@endpoints/Endpoint';
-import SocketRequest from '@socket/SocketRequest';
 
 export default class SocketServer {
     public io: any;
@@ -21,8 +21,8 @@ export default class SocketServer {
         this.io.on('connection', this.onConnectionRecieved);
     }
 
-    public onConnectionRecieved(ioSocket: any): SocketRequest {
-        const socket: SocketRequest = new SocketRequest(this.app, this, ioSocket);
+    public onConnectionRecieved(ioSocket: any): SocketConnection {
+        const socket: SocketConnection = new SocketConnection(this.app, this, ioSocket);
         console.log(`Connection recieved: ${socket.id}`);
         return socket;
     }
