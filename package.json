@@ -25,7 +25,7 @@
     "@types/node": "^10.12.12",
     "@types/socket.io": "^2.1.2",
     "@types/uuid": "^3.4.4",
-    "jest": "^23.6.0",
+    "jest": "^24.8.0",
     "ts-jest": "^23.10.5",
     "ts-mock-imports": "^1.2.2",
     "tsconfig-paths": "^3.7.0",
